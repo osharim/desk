@@ -1,0 +1,98 @@
+.main_color_bg{
+
+
+	/*background :#2581b6;*/
+	background : radial-gradient(ellipse farthest-corner at left top , #1492db -19%, #006EAE 84%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+
+}
+
+
+.menu .user,.menu .user:hover,.menu .user:active {
+	background:inherit;
+	    border: 0 none !important;
+	        box-shadow: 0 0 !important;
+	}
+
+.menu .user .name{
+
+	  color: #FFFFFF;
+	      font-family: "gb";
+	          font-size: 14px;
+		      margin-top: 10px;
+		          text-shadow: 1px 1px rgba(0, 0, 0, 0.2);
+
+
+}
+
+
+.menu .user .img{
+	  background: url("https://s3.amazonaws.com/pinffiles/unknown.png") repeat scroll 0 0 / 100% auto rgba(0, 0, 0, 0);
+	      border: 2px solid #FFFFFF;
+	          border-radius: 50%;
+		      box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+		          content: "sd";
+			      display: inline-block;
+			          height: 90px;
+				      padding: 1%;
+				          text-align: center;
+					      width: 90px;
+
+}
+
+
+
+.menu{
+ color: #CCCCCC;
+    float: left;
+       font-size: 15px;
+          height: 100%;
+	     max-width: 122px;
+	           width: 11%;	
+}
+
+.menu ul  li {
+	font-family:"gb",sans-serif,arial;
+	   border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+	       box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4);
+	        padding: 20px 9px;
+		       text-align: center;
+		         font-size: 12px;
+    }
+ 
+.menu a:last-child li {
+	    border-bottom: 0 none;
+	        box-shadow: 0 0;
+	}
+
+.menu ul  li:hover , .menu ul li.active {
+	color:white;
+	   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.4);
+	           box-shadow: 7px 6px 6px rgba(0, 0, 0, 0.3) inset;
+		       cursor:pointer;
+    }
+
+.icon {
+	        display: inline-block;
+		margin-bottom:8px;
+		    height: 15px;
+		        width: 17px;
+}
+
+.icon.dashboard{ background: url("/media/img/icons.png") repeat scroll -31px -1px rgba(0, 0, 0, 0)}
+.icon.profile{ background: url("/media/img/icons.png") repeat scroll 0 0 rgba(0, 0, 0, 0); }
+.icon.reminder{ background:url("/media/img/icons.png") repeat scroll -64px 0px rgba(0, 0, 0, 0)}
+.icon.goal{ background: url("/media/img/icons.png") repeat scroll 76px 0 rgba(0, 0, 0, 0);}
+.icon.setting{ background: url("/media/img/icons.png") repeat scroll 47px 0 rgba(0, 0, 0, 0) } 
+.icon.down{ background :url("/media/img/icons.png") repeat scroll 191px 0 rgba(0, 0, 0, 0);font-style: normal;
+	    padding-left: 16px;}
+
+
+
+
+    .menu .glyphicon.glyphicon-heart {
+	        font-size: 14px;
+		    margin-bottom: 11px;
+	    }
+.name:first-letter {
+	    text-transform: uppercase;
+    }

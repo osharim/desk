@@ -1,0 +1,232 @@
+.content_register{
+	   background: url("http://modadechicas.com/wp-content/uploads/2014/05/DIETA.jpg") repeat scroll 0 0 rgba(0, 0, 0, 0);
+	       bottom: 0;
+	           left: 0;
+		       overflow: scroll;
+		           position: fixed;
+			       right: 0;
+			           top: 0;
+				       z-index: 100;
+}
+
+.form_login {
+	 background: none repeat scroll 0 0 rgba(255, 255, 255, 0.98);
+	     border: 1px solid #CCCCCC;
+	         border-radius: 7px;
+		     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+		         height: auto;
+			     margin: 55px auto;
+			         overflow: hidden;
+				     text-align: center;
+				         width: 579px;
+				}
+
+.form_login .header{
+	 background: url("http://ubisalud.cs.buap.mx/mexdieta/images/logo1.png") no-repeat scroll 57px center rgba(200, 200, 200, 0.1);
+	     box-shadow: 0 0;
+	         font-family: "gb";
+		     font-size: 20px;
+		         padding: 36px 4%;
+			     text-align: right;
+			         text-transform: uppercase;
+				     width: 92%;
+}
+
+
+.form_login .content{
+	    float: left;
+	        padding: 30px 0;
+		    width: 100%;
+
+
+}
+
+.form_login .footer:hover{
+	
+	opacity:1;
+
+}
+
+.form_login .footer{
+	 background: none repeat scroll 0 0 #FAFBFC;
+	     border-top: 1px solid #DDDDDD;
+	         float: left;
+		     padding: 18px 0;
+		         width: 100%;
+			 opacity :.6;
+
+
+}
+
+.form_login input {
+	   border-color: #888888 #BBBBBB #BBBBBB;
+	       border-image: none;
+	           border-radius: 5px;
+		       border-style: solid;
+		           border-width: 1px;
+			       box-shadow: 2px 2px #EEEEEE inset;
+			           font-size: 18px;
+				       margin: 2% 0;
+				           padding: 14px;
+					       width: 75%;
+					}
+
+
+.btn.blue {
+	    background: none repeat scroll 0 0 #3498DB;
+	        display: inline-block;
+		    font-size: 18px;
+		        margin: 15px 0;
+			    padding: 20px 31%;
+		    }
+
+.form_login .context:hover{
+	text-decoration: underline;
+	color:#444;
+}
+.form_login .context{
+	color: #999999;
+	    cursor: pointer;
+	        float: left;
+		    font-family: "gl";
+		        font-size: 14px;
+			    padding: 7px 0 !important;
+			        text-align: center;
+				    width: 100%;
+}
+
+.btn.red{
+	background: #E74C3C;
+}
+
+
+.error {
+	    color: #E74C3C;
+	        font-size: 18px;
+	}
+.login_registered{
+
+	display : none;
+	-webkit-transition: width 2s, height 2s,-webkit-transform 2s;  /* For Safari 3.1 to 6.0 */
+	    transition: width 2s, height 2s, transform 2s;
+
+}
+
+.login_fields{
+
+-webkit-transition: width 2s, height 2s,-webkit-transform 2s;  /* For Safari 3.1 to 6.0 */
+    transition: width 2s, height 2s, transform 2s;
+}
+
+input:focus {
+	    background: none repeat scroll 0 0 #FFFFFF;
+	        border: 2px solid #2ECC71;
+		    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3) inset;
+		        color: #2ECC71;
+		}
+
+.step_two{
+
+	display:none;
+}
+
+.form-control {
+	background-color: #FFFFFF;
+	background-image: none;
+	border: 1px solid #CCCCCC;
+	border-radius: 4px;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+	color: #555555;
+	display: block;
+	font-size: 14px;
+	height: 34px;
+	line-height: 1.42857;
+	padding: 6px 12px;
+	transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+	vertical-align: middle;
+	width: 100%;
+						}
+
+.step_two input, .step_two select {
+	    height: auto;
+	        padding: 12px;
+	}
+
+	.form-group {
+		        float: left;
+			    height: auto;
+			        overflow-y: auto;
+				    text-align: center;
+				        width: 32%;
+				}
+
+	.col-sm-5, .col-sm-6 {
+		    float: left;
+		        margin: 5px;
+			    width: auto;
+		    }
+
+
+
+.date-time-human .col-sm-4 {
+	    float: left;
+	        margin: 12px 42px;
+	}
+
+.date-time-human {
+	        float: left;
+		    height: auto;
+		        overflow-y: auto;
+			    width: 100%;
+		   
+		    }
+
+
+
+	.sex-human .radio-inline {
+		    float: right;
+	    }
+	    .sex-human label {
+		     height: auto;
+		         overflow-y: auto;
+			     padding: 10px 1px;
+			         text-align: left;
+				     width: 43%;
+				}
+
+
+	.sex-human .control-label {
+		    float: left;
+		        width: 100%;
+		}
+
+		.human-activity {
+			    padding: 0 27px;
+			        width: 40%;
+			}
+	.metric-grid-container {
+		 float: left;
+		     padding: 24px 21px 0;
+		         width: 100%;
+	
+	    }
+
+
+	    
+			.sex-human input {
+				        float: left;
+					    margin: 0;
+					        width: 103px;
+					}
+	.last_message {
+		 color: #1ABC9C;
+		     display: inline-block;
+		         font-family: "gl";
+			     font-size: 38px;
+			         padding: 10px 0;
+				     width: 97%;
+					}
+label {
+	    color: #888888;
+	        font-weight: bold;
+	}

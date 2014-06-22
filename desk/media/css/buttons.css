@@ -1,0 +1,29 @@
+.btn{
+
+	cursor:pointer;
+	        border-radius: 3px;
+		    box-shadow: 1px 1px 1px rgba(255, 255, 255, 0.4) inset;
+		        color: #FFFFFF;
+			        font-size: 14px;
+				    padding: 11px;
+}
+
+.btn:hover{ opacity: 0.8; box-shadow:1px 1px 1px rgba(0,0,0,.5); }
+.btn:active{ opacity: 1; box-shadow : 1px 1px 3px rgba(0, 0, 0, 0.5) inset;}
+
+.btn.orange{
+	background: none repeat scroll 0 0 #F86B2F;
+	    border: 1px solid #B21F01;
+}
+
+
+
+.btn.gray{
+	background: none repeat scroll 0 0 #f9f9f9;
+	    border: 1px solid #d5d3d3;
+	    color:#999;
+}
+
+
+
+

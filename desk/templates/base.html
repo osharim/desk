@@ -1,0 +1,86 @@
+<!DOCTYPE html>  
+
+
+<!--[if lt IE 7 ]> <html class="ie ie6 no-js" lang="en"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie ie7 no-js" lang="en"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie ie8 no-js" lang="en"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie ie9 no-js" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--><html class="no-js" lang="en"><!--<![endif]-->
+	<head>
+
+
+		<title>Desk | Dashboard </title>
+
+
+	  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+
+	   <meta name="author" content="Desk">
+	   <meta name="Copyright" content="Copyright Desk 2013.">
+
+
+	 <link rel="shortcut icon" href="{{ MEDIA_URL }}img/favicon.ico" />
+	 <link rel="stylesheet" href="{{ MEDIA_URL }}{{ PATH_STYLE_CSS }}{% if not PATH_STYLE_CSS %}css/skeleton.min.css{% endif %}"/> 
+
+
+	</head>
+
+	<body >
+
+
+
+
+		<div id="main_container">
+
+			{% include "menu.html" %}
+
+
+
+		</div>
+
+
+
+
+
+		<div class="main_loader bg- ">
+
+			<div class="logo"></div>
+			<div class="loader" id="loader"></div>
+
+		</div>
+
+
+
+		<script>
+
+
+		var config =  { 
+		                 "baseUrl" : "{{ MEDIA_URL }}js/libs/" ,
+			    	 "user" : {
+					   lang : "ES"		    
+				   }
+					 
+		};
+
+
+		</script>
+
+		 {% include 'modal.html' %} 
+		 {% include "templates_backbone/routes.html" %}
+
+
+	
+		 <!-- Estupido Explorer -->
+		 <!–[if lt IE 9]>
+		 <script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js?v=2.2"></script>
+		 <![endif]–> 
+
+	        {% block js %} {% endblock js %} 
+		<script data-main="{{ MEDIA_URL}}{{ PATH_STYLE_JS }}{% if not PATH_STYLE_CSS %}js/dist/main{% endif %}" src="{{ MEDIA_URL }}js/libs/require.js"></script>
+
+
+
+	</body>
+
+</html>
