@@ -1,7 +1,7 @@
 /**
  *  Bentel Mexico
  *  Modalbox  
- *  Copyright 2013 @Bentel Mexico.
+ *  Copyright 2014 @Bentel Mexico.
  *  @Omr.
  *
  */

@@ -9,29 +9,8 @@ return (function(){
        	     _           = require('underscore'),   
 	     Backbone    = require('backbone'),  
        	     handler     = require('handlers'),
-       	     status  	 = require('status'),
        	     modal 	 = require('modal'),
        	     timeago     = require('timeago');
-
-
-
-//iniciar todos los switch de la aplicacion
-_.each( $(".js-switch") , function(item , index){ var switchery = new Switchery(item); }); 
-
-
-
-// los switch de colores de ajustes
-var blue = document.querySelector('.js-switch-blue');
-var switchery = new Switchery(blue, { color: '#41b7f1' });
-
-var pink = document.querySelector('.js-switch-pink');
-var switchery = new Switchery(pink, { color: '#ff7791' });
-
-var teal = document.querySelector('.js-switch-teal');
-var switchery = new Switchery(teal, { color: '#3cc8ad' });
-
-var red = document.querySelector('.js-switch-red');
-var switchery = new Switchery(red, { color: '#db5554' });
 
 
 
@@ -55,12 +34,11 @@ var switchery = new Switchery(red, { color: '#db5554' });
 		routes : {
 
 			"" : "dashboard",
-			"dashboard" : "dashboard",
-			"perfil" : "perfil",
-			"metas" : "metas",
-			"ajustes" : "ajustes",
-			"recordatorios" : "recordatorios",
-			"dieta" : "dieta"
+			"!/dashboard/" : "dashboard",
+			"!/aplicaciones/" : "apps",
+			"!/workspace/" : "workspace",
+			"!/contactos/" : "contact",
+			"!/ajustes/" : "setting",
 
 			 },
 			dashboard : function(){
@@ -72,12 +50,7 @@ var switchery = new Switchery(red, { color: '#db5554' });
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-
-
-       	     							   var tracking    = require('tracking');
-						
 						}
-
 
 					});
 
@@ -85,113 +58,73 @@ var switchery = new Switchery(red, { color: '#db5554' });
 
 
 			},
-			perfil : function(){
+			apps: function(){
 
-
-					var  Profile = Backbone.View.extend({
+					var  Apps= Backbone.View.extend({
 						 defaults : {  
-							handler : "profile" ,   
+							handler : "apps" ,   
 						},
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-
-
-						
 						}
 
-
 					});
-
-					    new Profile();
-
-
-
-
-
+					    new Apps();
 			},
-			metas : function(){
 
+			contact : function(){
 
-					var  Goals= Backbone.View.extend({
+					var  Contact = Backbone.View.extend({
 						 defaults : {  
-							handler : "goal" ,   
+							handler : "contact" ,   
 						},
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-						
 						}
 
-
 					});
+					    new Contact();
 
-					    new Goals();
-
-
-
-
-
+					    // cargar templates de forma asincrona
+					    var template  = require("text!../templates/contact/button_create_contact.html");
+					    var data = {}
+					    var compiledTemplate = _.template( template , data );
+					    console.log(compiledTemplate)
+					    $(".section_[data-nav=contact] .header_main").append(compiledTemplate);
 
 			},
-			ajustes : function(){
 
+			setting : function(){
 
-					var  Settings = Backbone.View.extend({
+					var  Setting = Backbone.View.extend({
 						 defaults : {  
 							handler : "setting" ,   
 						},
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-						
 						}
 
-
 					});
+					    new Setting();
+			},
 
-					    new Settings();
-		},
+			workspace : function(){
 
-		recordatorios: function(){
-
-
-					var  Reminders = Backbone.View.extend({
+					var  Workspace = Backbone.View.extend({
 						 defaults : {  
-							handler : "reminder" ,   
+							handler : "workspace" ,   
 						},
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-						
 						}
 
-
 					});
-
-					    new Reminders();
-		},
-
-
-
-		dieta : function(){
-
-
-					var  Diet = Backbone.View.extend({
-						 defaults : {  
-							handler : "diet" ,   
-						},
-						initialize : function(){ 
-
-								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-						
-						}
-
-
-					});
-
-					    new Diet();
-		},
+					    new Workspace();
+			},
 
 
 	});

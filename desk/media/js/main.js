@@ -23,12 +23,14 @@ require.config({
 		       "app" : "../app", // inicializador de la app
 		       'router' : '../router', //ruteo de toda la app
 		       'handlers' : '../handlers/tabs', // sincroniza el contenedor con las tabs
-		       'status' : '../views/status_nav/status', // barra lateral que tiene un circulo con el status
+
+
+
+
+
 
 		       //Dashboard
 
-		       'tracking' : '../views/dashboard/tracking', // Grafica que contiene todo el monitoreo de las semanas del usuariio
-		       //"switchery" : "switchery",// switch ios7
                 }
         });
 
