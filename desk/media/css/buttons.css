@@ -27,3 +27,8 @@
 
 
 
+.btn.green {
+	    background: none repeat scroll 0 0 #16A085;
+		    padding: 10px 35px;
+		        text-align: center;
+}

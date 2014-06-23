@@ -3,17 +3,16 @@
 
 
 .block{
-
-background: none repeat scroll 0 0 rgba(0, 0, 0, 0.8);
-bottom: 0;
-height: 100%;
-left: 0;
-position: absolute;
-right: 0;
-top: 0;
-width: 100%;
- z-index: 1000;
- display: none;
+ background: none repeat scroll 0 0 rgba(60, 109, 142, 0.97);
+     bottom: 0;
+         display: none;
+	     height: 100%;
+	         left: 0;
+		     position: absolute;
+		         right: 0;
+			     top: 0;
+			         width: 100%;
+				     z-index: 1000;
  
  }
 
@@ -21,52 +20,43 @@ width: 100%;
 
 
 .box{
-
-	background-clip: padding-box;
-	background-color: #FFFFFF;
-border: 1px solid rgba(0, 0, 0, 0.3);
-	border-radius: 6px 6px 6px 6px;
-	box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
-left: 50%;
-      margin-left: -280px;
-outline: medium none;
-position: fixed;
-top: 10%;
-width: 560px;
-       z-index: 1050;
-
+   left: 50%;
+       margin-left: -280px;
+           outline: medium none;
+	       position: fixed;
+	           top: 10%;
+		       width: 560px;
+		           z-index: 1050;
 }
 /* titulo de la ventana */
 
 
 .modal .title{
- border-bottom: 1px solid #EEEEEE;
-     padding: 9px 15px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px rgba(255, 255, 255, 0.2);
+	    color: #FFFFFF;
+	        font-family: "gl";
+		    font-size: 22px;
+		        padding-bottom: 21px;
+			    text-align: center;
 	     }
 
 /* body de la ventana */
 
 .modal .body{
-max-height: 400px;
-    overflow-y: auto;
-        padding: 15px;
-
+         color: #FFFFFF;
+	     font-family: "gl";
+	         font-size: 20px;
+		     padding: 28px 15px;
 }
 
 
 
 /* Pie de ventana */
 .modal .footer{
-
-
-	background-color: #F5F5F5;
-	border-radius: 0 0 6px 6px;
-	border-top: 1px solid #DDDDDD;
-	box-shadow: 0 1px 0 #FFFFFF inset;
-	margin-bottom: 0;
-	padding: 14px 15px 15px;
-        text-align: right;
-
+   margin-bottom: 0;
+       padding: 14px 15px 15px;
+           text-align: right;
 				 }
 
 /* botton cerrar "x" */

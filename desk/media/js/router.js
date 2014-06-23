@@ -75,24 +75,19 @@ return (function(){
 
 			contact : function(){
 
-					var  Contact = Backbone.View.extend({
+					var  ContactSection = Backbone.View.extend({
 						 defaults : {  
 							handler : "contact" ,   
 						},
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
+								   var main_contact = require("contact");
+								   !new main_contact();
 						}
 
 					});
-					    new Contact();
-
-					    // cargar templates de forma asincrona
-					    var template  = require("text!../templates/contact/button_create_contact.html");
-					    var data = {}
-					    var compiledTemplate = _.template( template , data );
-					    console.log(compiledTemplate)
-					    $(".section_[data-nav=contact] .header_main").append(compiledTemplate);
+					    new ContactSection();
 
 			},
 

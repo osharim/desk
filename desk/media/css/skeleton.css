@@ -112,7 +112,7 @@ src: url('../fonts/Gotham-XLight.ttf');
 				    padding: 10px;
 				        width: 380px;
 }
-.create_user {
+.create_contact {
 	    float: right;
 }
 
@@ -139,4 +139,36 @@ src: url('../fonts/Gotham-XLight.ttf');
 		    font-size: 12px;
 		        padding-right: 6px;
 			    padding-top: 1px;
+}
+
+
+.input_ {
+	          background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
+		      border: 1px solid rgba(0, 0, 0, 0.4);
+		          box-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+			      color: #FFFFFF;
+			          font-family: "gb";
+				      font-size: 14px;
+				          margin: 14px 0;
+					      padding: 12px 0 12px 4%;
+					          width: 96%;
+}
+
+.input_ input {
+	       background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
+	           border: medium none rgba(0, 0, 0, 0);
+		       color: rgba(255, 255, 255, 0.4);
+		           font-size: 14px;
+			       padding-left: 11px;
+			           width: 90%;
+}
+
+.input_ .glyphicon {
+	    color: rgba(255, 255, 255, 0.8);
+	        font-size: 11px;
+}
+
+.input_ input:focus{
+	color:white;
+
 }

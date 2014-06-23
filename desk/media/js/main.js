@@ -27,9 +27,14 @@ require.config({
 
 
 
-
-
 		       //Dashboard
+
+
+		       /*					CONTACT					        */
+		       /*					VIEWS  						*/
+		       /*					VIEWS  						*/
+		       "button_create_contact" : "../views/contact/button_create_contact", // boton crear contacto 
+		       "contact" : "../views/contact/contact", // vista general de contacto 
 
                 }
         });
