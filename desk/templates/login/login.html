@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Desk</title>
+ 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&amp;lang=es-419" rel= "stylesheet">
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/normalize.css"/>
+	<link rel="stylesheet" href="{{ MEDIA_URL }}css/landing.css"/>
+</head>
+<body>
+<div class="container" >
+<div class="main-title">
+
+Desk
+</div>
+<div class="content-login-form">
+	{% if state %}
+
+<div class="error" >		{{ state }}  </div>
+
+	{% endif %}
+
+		{% if next %}
+		<form action="/login/?next={{next}}" method="post" >
+		{%else%}
+		<form method="post" action="{% url 'login_path' %}">
+		{% endif %}
+
+		{% csrf_token %}
+		{{ login_form }}
+		<button class="button login" type="submit">Iniciar sesion</button>
+			</form>
+
+	<ul>
+		<!-- <li> <a href="/login/?lang=CN">中國 </li> -->
+	</ul>
+</div>
+</div>
+</body>
+</html>
+
+

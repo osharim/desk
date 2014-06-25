@@ -2,13 +2,15 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response 
 from django.conf import settings as set_django
+from apps.core.models import Settings
 import json as simplejson
 
 
-#@login_required
+@login_required
 def index(request): 
 
 	user = request.user
+	settings = Settings.objects.filter(user  =  user )[0] 
 	print user
 	print  user
 	print user.__dict__
@@ -22,6 +24,7 @@ def index(request):
 		"current_user": user ,
 		'APP_VERSION' :APP_VERSION ,
 		'PATH_STYLE_CSS' : PATH_STYLE_CSS,
+		'settings' : settings,
 		'PATH_STYLE_JS' :PATH_STYLE_JS 
 	}
 

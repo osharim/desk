@@ -10,6 +10,7 @@ return (function(){
 	     Backbone    = require('backbone'),  
        	     handler     = require('handlers'),
        	     modal 	 = require('modal'),
+       	     bootstrap = require('bootstrap'),
        	     timeago     = require('timeago');
 
 
@@ -37,7 +38,7 @@ return (function(){
 			"!/dashboard/" : "dashboard",
 			"!/aplicaciones/" : "apps",
 			"!/workspace/" : "workspace",
-			"!/contactos/" : "contact",
+			//"!/contactos/" : "contact",
 			"!/ajustes/" : "setting",
 
 			 },
@@ -74,6 +75,7 @@ return (function(){
 			},
 
 			contact : function(){
+				if(config.user.rol != 0){
 
 					var  ContactSection = Backbone.View.extend({
 						 defaults : {  
@@ -82,12 +84,13 @@ return (function(){
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-								   var main_contact = require("contact");
-								   !new main_contact();
+								   //var main_contact = require("contact");
+								   //!new main_contact();
 						}
 
 					});
 					    new ContactSection();
+				}
 
 			},
 
@@ -123,6 +126,12 @@ return (function(){
 
 
 	});
+
+	if( config.user.rol !=0){
+
+		App.Router.prototype.routes["!/contactos/"]= "contact";
+
+	}
 
 
 	/* Enabling backbone history so that backbone start monitoring hash changes in url. */ 

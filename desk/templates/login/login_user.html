@@ -1,0 +1,33 @@
+<div class="str-fl login-str">
+
+<div class="btn-group">
+
+<span data-toggle="dropdown" class="dropdown-toggle" type="button">
+
+<div class='img'>
+	<img src="{{ settings.img }}" width='26'  /> 
+</div>
+
+<span class='name'>  {{ user.first_name }}  {{ user.last_name}} </span>
+<span class="caret"></span>
+
+</span>
+
+<ul role="menu" class="dropdown-menu">
+
+
+<div class="tr_u"> </div>
+
+<li><a href="#">Ayuda</a></li>
+<li class="divider"></li>
+<li><a href="{% url 'logout_path' %} ">Salir</a></li>
+
+</ul>
+
+</div>
+</div>
+
+
+
+
+

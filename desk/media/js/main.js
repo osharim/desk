@@ -7,6 +7,7 @@ require.config({
         shim : {
 		   'ajax_st'  : { deps : ['jquery'] } ,
 		   'timeago'  : { deps : ['jquery'] } ,
+		   'bootstrap'  : { deps : ['jquery'] } ,
 		   //'switchery'  : { deps : ['underscore','transitionize','fastclick'] } ,
 		   //'c3'  : { deps : ['d3'] } ,
 		   'underscore'  : {  exports : '_' }  ,
@@ -35,11 +36,12 @@ require.config({
 		       /*					VIEWS  						*/
 		       "button_create_contact" : "../views/contact/button_create_contact", // boton crear contacto 
 		       "contact" : "../views/contact/contact", // vista general de contacto 
+		       "unique_contact" : "../views/contact/unique_contact", // render template de un unico contacto 
+		       "directory_contacts" : "../views/contact/directory_contacts", // contenedor general de los contactos 
 
                 }
         });
 
-  
 
 require([
 //Carga de nuestro modulo y lo pasamos a nuestra funcion

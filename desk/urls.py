@@ -9,7 +9,7 @@ urlpatterns = patterns('',
 		url(r'^' , include('apps.index.urls')) ,   
 		(r'^api/' , include(v1_api.urls)),
 		(r'api/doc/', include('tastypie_swagger.urls', namespace='tastypie_swagger')),   
-		#url(r'login/' , include('apps.login.urls')) ,
+		url(r'login/' , include('apps.login.urls')) ,
 		)
 
 

@@ -8,7 +8,8 @@ define( function(require){
 	 var $           = require('jquery'),  
 	  _           = require('underscore'), 
 	  Backbone    = require('backbone'),
-	  button_create_contact = require('button_create_contact');
+	  button_create_contact = require('button_create_contact'),
+	  directory_contacts = require('directory_contacts');
 
 	return (function(){ 
 
@@ -19,6 +20,7 @@ define( function(require){
 
 				console.log("init contact");
 				new button_create_contact();
+				new directory_contacts();
 
 			 }
 
