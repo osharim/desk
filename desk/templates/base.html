@@ -100,19 +100,22 @@ require.config({
 		       'handlers' : '../handlers/tabs', // sincroniza el contenedor con las tabs
 
 
+		       //workspace
+
+		       'workspace' : '../views/workspace/workspace', // Areas de trabajo 
+		       'button_create_workspace' : '../views/workspace/button_create_workspace', // boton crear Areas de trabajo 
+			"unique_workspace" : "../views/workspace/unique_workspace", // render template de un unico contacto 
+			"workspacebox" : "../views/workspace/workspacebox", //contenedor de todas las aplicaciones 
 
 
-		       //Dashboard
-
-
-			{% if settings.rol != '0'  %}
+			{% if settings.rol == '1'  %}
 			       /*					CONTACT					        */
 			       /*					VIEWS  						*/
 			       /*					VIEWS  						*/
-			       "button_create_contact" : "../views/contact/button_create_contact", // boton crear contacto 
-			       "contact" : "../views/contact/contact", // vista general de contacto 
-			       "unique_contact" : "../views/contact/unique_contact", // render template de un unico contacto 
-			       "directory_contacts" : "../views/contact/directory_contacts", // contenedor general de los contactos 
+			"button_create_contact" : "../views/contact/button_create_contact", // boton crear contacto 
+			 "contact" : "../views/contact/contact", // vista general de contacto 
+			 "unique_contact" : "../views/contact/unique_contact", // render template de un unico contacto 
+			 "directory_contacts" : "../views/contact/directory_contacts", // contenedor general de los contactos 
 
 			{% endif %}
 
@@ -125,6 +128,7 @@ require([
 'app' ,
 
 ], function(App){
+	console.log( config.user.rol)
 	App.initialize();
 });
 	

@@ -276,8 +276,42 @@ src: url('../fonts/Gotham-XLight.ttf');
 .contact {
 	    float: left;
 	        padding: 4px;
-		 margin: 10px 33px;
+		 text-align: center;
+		 margin: 10px 6px;
 	}
 
 
 
+.str_section{
+
+	     height: auto;
+	         overflow-y: auto;
+		     padding: 12px;}
+
+.workspace-item {
+	    background: none repeat scroll 0 0 #fafbfc;
+	        border: 1px solid #eee;
+		    border-radius: 3px;
+		        color: #111;
+			    float: left;
+			        font-family: "gb";
+				    font-size: 14px;
+				        margin: 5px;
+					    padding: 8px 17px;
+					        text-align: center;
+}
+
+.workspace-item:hover {
+	    background: none repeat scroll 0 0 #f1f2f3;
+	    cursor:pointer;
+}
+
+
+.workspacebox .glyphicon {
+	     color: #677;
+	        font-size: 23px;
+		    margin-bottom: 13px;
+}
+.create_workspace .glyphicon {
+	    color: #16a085;
+}

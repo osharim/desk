@@ -20,7 +20,14 @@ return (function(){
 		Model : {} ,
 		View : {},
 		Controller : {},
-		Router : {}
+		Router : {},
+		Instances : {
+
+			Contact : false,
+			Workspace : false,
+
+
+		}
 	};
 
 
@@ -75,7 +82,7 @@ return (function(){
 			},
 
 			contact : function(){
-				if(config.user.rol != 0){
+				if(config.user.rol == 1){
 
 					var  ContactSection = Backbone.View.extend({
 						 defaults : {  
@@ -84,8 +91,18 @@ return (function(){
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
-								   //var main_contact = require("contact");
-								   //!new main_contact();
+
+								   require(["contact"], function (contact) {
+
+									   if( !window.App.Instances.Contact){
+
+										 window.App.Instances.Contact = true;
+									   	 !new contact();
+
+									   }
+
+								   });
+
 						}
 
 					});
@@ -118,6 +135,23 @@ return (function(){
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
+
+
+								   require(["workspace"], function (workspace) {
+
+									   if( !window.App.Instances.Workspace){
+
+										 window.App.Instances.Workspace= true;
+									   	 !new workspace();
+
+									   }
+
+								   });
+
+
+
+
+
 						}
 
 					});
@@ -127,7 +161,7 @@ return (function(){
 
 	});
 
-	if( config.user.rol !=0){
+	if( config.user.rol ==1){
 
 		App.Router.prototype.routes["!/contactos/"]= "contact";
 

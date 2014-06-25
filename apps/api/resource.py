@@ -9,14 +9,6 @@ from django.core import serializers
 from django.db.models import Q , F
 from datetime import date 
 
-# Usuario Datos
-
-#class UsuarioDatosResource(ModelResource):
-	#usuario = fields.ForeignKey("apps.api.resource.UsuarioResource", 'usuario'    ,  null = True , full = True )          
-#	class Meta: 
-#		queryset = UsuarioDatos.objects.all()
-#		resource_name ='usuario'
-#		authorization= Authorization()     
 
 class UsuarioResource(ModelResource): 
 
@@ -112,6 +104,34 @@ class UserSignUpResource(ModelResource):
 		if error_message:
 			raise BadRequest(error_message)
 	return bundle
+
+
+
+class WorkspaceResource(ModelResource): 
+
+
+	owner = fields.ForeignKey("apps.api.resource.UsuarioResource",  full = True , attribute = 'owner') 
+
+	class Meta:
+	    	allowed_methods = ['get','post']
+		queryset = Workspace.objects.all()
+		resource_name ='workspace'
+		always_return_data = True
+		authorization= Authorization()
+
+	
+	def obj_create(self, bundle , request = None, ):
+
+		bundle.obj.name = bundle.data.get("name") 
+		bundle.obj.owner_id = bundle.request.user.id
+		bundle.obj.save()
+		return bundle
+
+	
+	def get_object_list(self, request):
+
+		 return super(WorkspaceResource, self).get_object_list(request).filter( owner = request.user)
+
 
 
 

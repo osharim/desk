@@ -22,3 +22,15 @@ class AdminCreatedUsers(models.Model):
     class Meta:
         db_table = u'administator_create_users'
 
+
+
+#Workspace
+class Workspace(models.Model):
+
+    owner = models.ForeignKey(User , related_name ="owner" , db_column = "owner_id")
+    date = models.DateTimeField( auto_now_add = True, db_column = "fecha" ) 
+    name = models.CharField(max_length=50, blank=True)
+
+    class Meta:
+        db_table = u'workspace'
+
