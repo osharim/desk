@@ -33,4 +33,14 @@ class Workspace(models.Model):
 
     class Meta:
         db_table = u'workspace'
+#Apps
+class Apps(models.Model):
+
+    owner = models.ForeignKey(User ,  db_column = "owner_id")
+    date = models.DateTimeField( auto_now_add = True, db_column = "date" ) 
+    name = models.CharField(max_length=50, blank=True)
+    workspace  = models.ForeignKey(Workspace   , db_column = "workspace_id")
+
+    class Meta:
+        db_table = u'apps'
 

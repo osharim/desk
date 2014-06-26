@@ -1,6 +1,6 @@
 /*
 
-	Summary: Maneja todo el directorio de workspaceos  
+	Summary: Maneja todo el directorio de workspaces , obtiene todos los workspaces
 */
 
 define( function(require){ 
@@ -24,13 +24,13 @@ define( function(require){
 
 	  
 		  //model
-		 WorkspaceBox.Models.Contacts = Backbone.Model.extend({});
+		 WorkspaceBox.Models.Workspaces = Backbone.Model.extend({});
 
 		 WorkspaceBox.Collections.Directory = Backbone.Collection.extend({ 
 
 			 url : '/api/v1/workspace/',  
 
-		         model: WorkspaceBox.Models.Contacts ,// workspace is a model 
+		         model: WorkspaceBox.Models.Workspaces ,// workspace is a model 
 			 
 			 parse: function(response) { 
 
@@ -68,7 +68,7 @@ define( function(require){
 						     var collection_length = WorkspaceBox.Collections.current_collection.length;
 						     var last_model = WorkspaceBox.Collections.current_collection.at(collection_length-1)  
 
-						     this.renderContact(last_model)
+						     this.renderWorkspace(last_model)
 
 
 
@@ -82,12 +82,12 @@ define( function(require){
 			var that =this ;
 
 			_.each (WorkspaceBox.Collections.current_collection.models , function(workspace_item){ 
-					that.renderContact(workspace_item);
+					that.renderWorkspace(workspace_item);
 			});
 						       
 						       
 			},
-			 renderContact : function(workspace_item){ 
+			 renderWorkspace : function(workspace_item){ 
 
 
 						  var workspaceView  = new unique_workspace({ 
@@ -95,7 +95,7 @@ define( function(require){
 
 						  });
 						var template_workspace = workspaceView.render().el;
-						$(".section_[data-nav=workspace] .workspacebox").append( template_workspace);
+						$(".workspace_box .wbox").append( template_workspace);
 
 			}
 							

@@ -22,7 +22,7 @@ define( function(require){
 
 		  }
 
-		  var url_to_get_users = "/api/v1/users/"
+		  var url_to_get_users = "/api/v1/allowed/"
 	  
 		  //model
 		 Directory_contacts.Models.Contacts = Backbone.Model.extend({});

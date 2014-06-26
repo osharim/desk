@@ -34,8 +34,11 @@
 		<div id="main_container">
 
 			{% include "menu.html" %}
+			{% include "sections/workspacebox.html" %}
+			{% include "sections/appbox.html" %}
 			{% include "sections/dashboard.html" %} 
 			{% include "sections/apps.html" %} 
+			{% include "sections/new_app.html" %} 
 			{% include "sections/workspace.html" %} 
 			{% include "sections/contact.html" %} 
 			{% include "sections/setting.html" %} 
@@ -99,6 +102,12 @@ require.config({
 		       'router' : '../router', //ruteo de toda la app
 		       'handlers' : '../handlers/tabs', // sincroniza el contenedor con las tabs
 
+		       //apps
+			"button_create_app" : "../views/apps/button_create_app", // Boton crear aplicacion 
+			"create_app" : "../views/apps/create_app", // crear aplicacion 
+			"button_save_app" : "../views/apps/button_save_app", // salvar aplicacion 
+			"appbox" : "../views/apps/apps", // salvar aplicacion 
+			"unique_app" : "../views/apps/unique_app", // app 1:1 con evento al dar click en app 1:1
 
 		       //workspace
 

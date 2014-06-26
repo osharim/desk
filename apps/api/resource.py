@@ -18,7 +18,19 @@ class UsuarioResource(ModelResource):
 
 
 
+
 class UsersResource(ModelResource):
+
+  	class Meta:
+
+	    queryset = User.objects.all()
+            excludes = ['is_active', 'is_staff', 'is_superuser','date_joined' ,'last_login' , 'username','password']
+	    allowed_methods = ['get']
+	    resource_name = 'user'
+	    
+
+
+class AllowedUsersResource(ModelResource):
 
 	user = fields.ForeignKey("apps.api.resource.UsuarioResource",  full = True , attribute = 'user') 
 
@@ -27,7 +39,7 @@ class UsersResource(ModelResource):
 	    object_class = User
 	    queryset = AdminCreatedUsers.objects.all()
 	    allowed_methods = ['get']
-	    resource_name = 'users'
+	    resource_name = 'allowed'
 	    
   	def dehydrate(self , bundle):
 
@@ -38,7 +50,7 @@ class UsersResource(ModelResource):
 	
 	def get_object_list(self, request):
 
-		 return super(UsersResource, self).get_object_list(request).filter( admin = request.user)
+		 return super(AllowedUsersResource , self).get_object_list(request).filter( admin = request.user)
 
 
 # ***********************************************************************************************************************
@@ -132,6 +144,69 @@ class WorkspaceResource(ModelResource):
 
 		 return super(WorkspaceResource, self).get_object_list(request).filter( owner = request.user)
 
+
+
+
+
+
+
+
+class AppsResource(ModelResource): 
+
+
+	owner = fields.ForeignKey("apps.api.resource.UsuarioResource",  full = True , attribute = 'owner') 
+	workspace = fields.ForeignKey("apps.api.resource.WorkspaceResource",  full = True , attribute = 'workspace') 
+
+	class Meta:
+	    	allowed_methods = ['get','post']
+		queryset = Apps.objects.all()
+		resource_name ='apps'
+		always_return_data = True
+		authorization= Authorization()
+
+	
+	#def obj_create(self, bundle , request = None, ):
+
+		#bundle.obj.name = bundle.data.get("name") 
+		#bundle.obj.workspace = bundle.data.get("workspace") 
+		#bundle.obj.owner = bundle.request.user.id
+		#bundle.obj.save()
+		#return bundle
+
+	
+	#def get_object_list(self, request):
+
+		 #return super(WorkspaceResource, self).get_object_list(request).filter( owner = request.user)
+
+
+
+
+
+
+
+#Todas las apps que un workspace tiene
+class WorkSpaceAppsResource(ModelResource): 
+
+	#workspace = fields.ForeignKey("apps.api.resource.WorkspaceResource",  full = True , attribute = 'workspace') 
+
+	class Meta:
+	    	allowed_methods = ['get']
+		queryset = Apps.objects.all()
+		resource_name ='workspaceapps'
+		always_return_data = True
+		authorization= Authorization()
+
+	
+	def get_object_list(self, request):
+
+		
+		id_workspace =  int(request.GET.get("workspace"))
+
+		allowed_apps = super(WorkSpaceAppsResource, self).get_object_list(request).filter( owner = request.user.id)
+
+		allowed_apps = allowed_apps.filter( workspace =  id_workspace )
+
+		return allowed_apps
 
 
 

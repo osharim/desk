@@ -1,0 +1,51 @@
+.app tr:nth-child(2n) {
+	    background: none repeat scroll 0 0 #eee;
+    }
+
+.app tbody td {
+	    color: #333;
+	        font-size: 12px;
+		    padding: 7px 0;
+	    }
+.app thead {
+	    border: 1px solid #ddd;
+	        width: 100%;
+	}
+
+table.app {
+	 text-align: center;
+	    width: 100%;
+    }
+   .app thead th {
+	    background: none repeat scroll 0 0 #eee;
+	    border-left: 1px solid #bbb;
+	    font-size: 14px;
+	    padding: 9px;
+	    text-align: center;
+}
+
+.app-str .name {
+	    text-transform: capitalize;
+    }
+
+.app-str .glyphicon {
+	color: #444;
+	display: inline-block;
+	font-size: 23px;
+	padding-bottom: 15px;
+	}
+
+	.app-str {
+		background: none repeat scroll 0 0 #eee;
+		border: 1px solid #ccc;
+		float: left;
+		margin: 1px 7px;
+		min-width: 100px;
+		padding: 11px;
+		text-align: center;
+			    }
+.app-str:hover{
+ 	cursor:pointer;
+	background: none repeat scroll 0 0 #fafbfc;
+
+}

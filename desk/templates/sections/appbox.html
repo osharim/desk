@@ -1,8 +1,8 @@
-<div class="section_" data-nav="workspace">
+<div class="section_" data-nav="appbox">
 	<div class="header">
 		<ul>
 
-			<li class="path"> <br> </li>
+			<li class="path" class="current_workspace"> <br> </li>
 			<li class="path fl rg"> {% include "login/login_user.html" %} </li>
 
 		</ul>
@@ -24,15 +24,18 @@
 				<div class="workspace_apps str_section">
 
 
+
 					<div class="status_workspace">
 						<i class="glyphicon glyphicon-inbox"></i>
 
 						<div>
-							<span class="name"> No has seleccionado ningun area de trabajo</span>
+							<span class="name loading"> Cargando aplicaciones...</span>
+							<span class="name no_apps">Aun no has añadido ninguna Aplicacion</span>
 						</div>
 
 					</div>
 
+					<div class="container_appbox"> </div>
 					</div>
 
 

@@ -20,11 +20,29 @@ return (function(){
 		Model : {} ,
 		View : {},
 		Controller : {},
+		Navigate : {},
 		Router : {},
+       		Sections : {
+			
+			slideRightMainWindow : function(){
+
+				$(".section_").animate({left : 365 });
+			},
+			slideLeftMainWindow : function(){
+
+				 $(".section_").animate({left : 170 });
+			}
+
+
+		},
 		Instances : {
 
 			Contact : false,
 			Workspace : false,
+			App : {
+				Create : false
+				
+			},
 
 
 		}
@@ -43,7 +61,7 @@ return (function(){
 
 			"" : "dashboard",
 			"!/dashboard/" : "dashboard",
-			"!/aplicaciones/" : "apps",
+			"!/aplicaciones/favoritas/" : "apps_favorites",
 			"!/workspace/" : "workspace",
 			//"!/contactos/" : "contact",
 			"!/ajustes/" : "setting",
@@ -63,10 +81,11 @@ return (function(){
 					});
 
 					    new Dashboard();
+					    window.App.Sections.slideLeftMainWindow();
 
 
 			},
-			apps: function(){
+			apps_favorites : function(){
 
 					var  Apps= Backbone.View.extend({
 						 defaults : {  
@@ -79,6 +98,7 @@ return (function(){
 
 					});
 					    new Apps();
+					    window.App.Sections.slideLeftMainWindow();
 			},
 
 			contact : function(){
@@ -107,6 +127,7 @@ return (function(){
 
 					});
 					    new ContactSection();
+				    window.App.Sections.slideLeftMainWindow();
 				}
 
 			},
@@ -120,6 +141,7 @@ return (function(){
 						initialize : function(){ 
 
 								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
+								   window.App.Sections.slideLeftMainWindow();
 						}
 
 					});
@@ -156,6 +178,7 @@ return (function(){
 
 					});
 					    new Workspace();
+					    window.App.Sections.slideRightMainWindow();
 			},
 
 
