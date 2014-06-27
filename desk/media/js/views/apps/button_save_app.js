@@ -1,6 +1,6 @@
 /*
 
-	Summary: Crea la vista del Boton "salvar applicacion"
+	Summary: Crea la vista del Boton "salvar applicacion" --- Este boton ya no se usa , los cambios como nombre o columna se guardan automaticamente
 */
 
 define( function(require){ 

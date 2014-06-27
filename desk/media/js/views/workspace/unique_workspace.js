@@ -35,6 +35,16 @@ define( function(require){
 				    },
 		           open_workspace : function(e){
 
+
+						    $(".section_[data-nav=apps]").show();
+						
+					           window.App.Sections.slideRightMainWindow();
+						   //eliminamos todos los menus que fueron seleccionado anteriornente 
+						    $(".wbox").find(".active").removeClass("active")
+						    //activamos el estilo para el workspace que se le dio click
+						    $( e.currentTarget ).find("li").addClass("active")
+
+ 					            window.App.Instances.App.Create = true;
 				 		    var navigate_to_workspace_by_id = this.model.get("id")
 					            var app =  new appbox({ navigate_to_workspace_by_id : navigate_to_workspace_by_id });
 

@@ -31,7 +31,7 @@ define( function(require){
 					    var template  =  this.template;
 					    var data = {}
 					    var compiledTemplate = _.template( template , data );
-					   $(".section_[data-nav=appbox] .header_main").append( this.$el.append( compiledTemplate )  );
+					   $(".btn_create_app_into_workspace").html( this.$el.append( compiledTemplate )  );
 
 			 },
 			  events : { 

@@ -35,7 +35,7 @@ define( function(require){
 					    var template  =  this.template;
 					    var data = {}
 					    var compiledTemplate = _.template( template , data );
-					   $(".workspace_box .wbox").append( this.$el.append( compiledTemplate )  );
+					   $(".btn_add_workspace").append( this.$el.append( compiledTemplate )  );
 
 			 },
 			  events : { 

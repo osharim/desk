@@ -32,7 +32,7 @@ html,body,#main_container{
 	      display: none;
 	          float: left;
 		      height: 100%;
-		          left: 170px;
+		          left: 191px;
 			      overflow-y: auto;
 			          position: absolute;
 				      right: 0;
@@ -119,14 +119,14 @@ src: url('../fonts/Gotham-XLight.ttf');
 }
 
 .section_main {
-	    background: none repeat scroll 0 0 #FFFFFF;
-	        border: 1px solid #DDDDDD;
-		    border-radius: 5px;
-		        display: inline-block;
-			    float: left;
-			        min-height: 700px;
-				    padding: 4px;
-				        width: 100%;
+	 background: none repeat scroll 0 0 #ffffff;
+	     border: 1px solid #dddddd;
+	         border-radius: 5px;
+		     display: inline-block;
+		         float: left;
+			     min-height: 700px;
+			         padding: 1%;
+				     width: 98%;
 }
 
 .header_main{
@@ -314,10 +314,6 @@ src: url('../fonts/Gotham-XLight.ttf');
 	        font-size: 23px;
 		    margin-bottom: 13px;
 }
-.create_workspace .glyphicon {
-	    color: #16a085;
-}
-
 .workspace_box .head {
 	    margin-bottom: 4px;
     }
@@ -326,3 +322,30 @@ src: url('../fonts/Gotham-XLight.ttf');
 	  display:none;
 
   }
+
+ .current_section {
+	 color: rgba(255, 255, 255, 0.8);
+	     float: left;
+	         font-size: 12px;
+		     padding: 11px;
+		         width: 87%;
+	     }
+
+	     .btn_add_workspace {
+		           float: right;
+			       padding: 0 12px;
+		       color: rgba(0,0,0,.4);
+		 }
+
+
+	     .btn_add_workspace:hover {
+		       cursor: pointer;
+		       color: rgba(0,0,0,.8);
+		 }
+
+
+	     .btn_add_workspace:active{
+		     color:white; 
+		       color: rgba(0,0,0,.4);
+		     
+	     }

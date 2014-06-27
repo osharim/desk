@@ -1,3 +1,9 @@
+.app thead th:last-child {
+	    color: #1abc9c;
+	        font-size: 24px;
+	}
+
+
 .app tr:nth-child(2n) {
 	    background: none repeat scroll 0 0 #eee;
     }
@@ -29,23 +35,30 @@ table.app {
     }
 
 .app-str .glyphicon {
-	color: #444;
-	display: inline-block;
-	font-size: 23px;
-	padding-bottom: 15px;
+	 color: #444;
+	     float: left;
+	         font-size: 23px;
 	}
 
-	.app-str {
-		background: none repeat scroll 0 0 #eee;
-		border: 1px solid #ccc;
-		float: left;
-		margin: 1px 7px;
-		min-width: 100px;
-		padding: 11px;
-		text-align: center;
-			    }
 .app-str:hover{
  	cursor:pointer;
 	background: none repeat scroll 0 0 #fafbfc;
 
 }
+
+.app-str div {
+	    float: left;
+	        padding: 10px 10px 10px 2px;
+	}
+.app-str li {
+	    padding: 7px 10px !important;
+    }
+
+   .appbox .head {
+	       margin-bottom: 11px !important;
+       }
+
+   .config_section {
+	           float: right;
+		       padding: 0 10px;
+	       }

@@ -158,7 +158,7 @@ class AppsResource(ModelResource):
 	workspace = fields.ForeignKey("apps.api.resource.WorkspaceResource",  full = True , attribute = 'workspace') 
 
 	class Meta:
-	    	allowed_methods = ['get','post']
+	    	allowed_methods = ['get','post','put']
 		queryset = Apps.objects.all()
 		resource_name ='apps'
 		always_return_data = True

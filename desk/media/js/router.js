@@ -27,10 +27,12 @@ return (function(){
 			slideRightMainWindow : function(){
 
 				$(".section_").animate({left : 365 });
+				 $(".appbox").show();
+				 //$(".menu .appbox").show();
 			},
 			slideLeftMainWindow : function(){
 
-				 $(".section_").animate({left : 170 });
+				 $(".section_").animate({left : 190  });
 			}
 
 
@@ -38,7 +40,11 @@ return (function(){
 		Instances : {
 
 			Contact : false,
-			Workspace : false,
+			Workspace : {
+				
+				By_id : "" ,
+				
+			},
 			App : {
 				Create : false
 				
@@ -56,13 +62,28 @@ return (function(){
 			initialize : function(){
 
 
+				//init workspaces
+
+				   require(["workspace"], function (workspace) {
+
+					   //if( window.App.Instances.Workspace.By_id){
+
+						 !new workspace();
+
+					   //}
+
+				   });
+
+
+
+
 		},
 		routes : {
 
 			"" : "dashboard",
 			"!/dashboard/" : "dashboard",
 			"!/aplicaciones/favoritas/" : "apps_favorites",
-			"!/workspace/" : "workspace",
+			"!/workspace/:workspace/:id/" : "workspace",
 			//"!/contactos/" : "contact",
 			"!/ajustes/" : "setting",
 
@@ -148,37 +169,11 @@ return (function(){
 					    new Setting();
 			},
 
-			workspace : function(){
-
-					var  Workspace = Backbone.View.extend({
-						 defaults : {  
-							handler : "workspace" ,   
-						},
-						initialize : function(){ 
-
-								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
+			workspace : function(workspace,id){
 
 
-								   require(["workspace"], function (workspace) {
+				window.App.Instances.Workspace.By_id  = id ;
 
-									   if( !window.App.Instances.Workspace){
-
-										 window.App.Instances.Workspace= true;
-									   	 !new workspace();
-
-									   }
-
-								   });
-
-
-
-
-
-						}
-
-					});
-					    new Workspace();
-					    window.App.Sections.slideRightMainWindow();
 			},
 
 

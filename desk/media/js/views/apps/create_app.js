@@ -11,21 +11,45 @@ define( function(require){
 	  button_save_app = require('button_save_app');
 	  require('modal');
 
+
 	return (function(){ 
-		 //nombre dw la aplicacion input
+
+		var App = {
+			Instance  : {},
+			Model : { },
+		}
+
+		//crear una aplicacion
+		App.Model.new_app = Backbone.Model.extend({    
+		     url : '/api/v1/apps/',    
+		     defaults: {  
+			      name : "",  
+			      owner : "/api/v1/user/",  
+			      workspace : "/api/v1/workspace/",  
+		     }
+		 });
+
+
+		 //INPUT:Nombre de la aplicacion
+		 //nombre de la aplicacion input
 		 var input_name_app = Backbone.View.extend({  
 
 			 el : '.create_name_app_',    
 
 			 events : {
 
-			    'keyup input' : 'filter'        
+			    'keyup input' : 'update_name'        
 
 			},
-		       filter : function(e){
+		       update_name: function(e){
 
 		                 //clase en la que se inyectara el nombre de la aplicacion
 			 	 $('.current_app').html($(e.currentTarget).val() )
+
+
+		 		var id_to_update =  App.Instance.aplicacion;
+		 		console.log( App.Instance.aplicacion)
+			 	 //application.save({ name : "hoo" });
 
 			}
 
@@ -41,9 +65,31 @@ define( function(require){
 			 initialize : function(){
 
 
-				 	     //boton salvar la app
-				 	     !new button_save_app();
+				 	     //boton salvar la app --- Ya no hay bton de salvar, los datos se guardan automagicamente
+				 	     //!new button_save_app();
  					     !new input_name_app();
+
+		 				
+					     var aplicacion = new App.Model.new_app();
+					     App.Instance.aplicacion = aplicacion;
+					     console.log(aplicacion)
+
+					     aplicacion.set("owner" , "/api/v1/user/25/");
+					     aplicacion.set("workspace" , "/api/v1/workspace/19/");
+					     aplicacion.set("name" , "Nueva Aplicacion");
+
+					     aplicacion.save(null,{
+
+						     success : function(model , data){
+
+								aplicacion.idAttribute  = aplicacion.id;   
+								AppBox.Collections.current_collection.add(aplicacion);  
+
+							       
+						   }
+						     
+					     });
+
 
 
 				 	     // se muestra la seccion de nueva aplicacion

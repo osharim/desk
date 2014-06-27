@@ -51,12 +51,28 @@ define( function(require){
 
 			},render : function(){
 
+
 				  var that = this;
 				WorkspaceBox.Collections.current_collection.fetch({ 
 
 					success : function(data){ 
 
 								that.update_models_in_controllers(); 
+
+								
+								var id = window.App.Instances.Workspace.By_id
+
+								
+								id = parseInt(id);
+
+								if(typeof id == "number"){
+
+									$(".workspace-str li[data-id="+id+"]").click()
+								}
+
+
+
+
 					}
 
 				});

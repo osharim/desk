@@ -21,8 +21,6 @@ define( function(require){
 		  }
 
 
-		  console.log(window.App.Navigate.workspace)
-		  console.log(App.Navigate.workspace)
 		//var workspace_to_route = '/api/v1/apps/'+window.App.Navigate.workspace+'/';
 
 		 AppBox.Models.AppBoxs = Backbone.Model.extend({});
@@ -52,17 +50,15 @@ define( function(require){
 				 
 					      
 
-					      if( !window.App.Instances.App.Create){
+					      //if( !window.App.Instances.App.Create){
 
- 							window.App.Instances.App.Create = true;
 				        		!new button_create_app();
 
-					      }
-
 				 	     // se muestra la seccion de nueva aplicacion
-					$(".section_[data-nav=new_app]").hide()
-					$(".section_[data-nav=workspace]").hide()
-					$(".section_[data-nav=appbox]").show()
+					    window.App.Sections.slideRightMainWindow();
+					//$(".section_[data-nav=new_app]").hide()
+					//$(".section_[data-nav=workspace]").hide()
+					//$(".section_[data-nav=appbox]").show()
 
 			 		console.log(this.options.navigate_to_workspace_by_id )
 
@@ -82,17 +78,15 @@ define( function(require){
 
 					success : function(data){ 
 
+								//se vacia el contenedor
+								$(".container_appbox ").html("");
+
 								if(data.length != 0){
 
-								        $(".workspace_apps .status_workspace").hide();
-									//se vacia el contenedor
-								        $(".workspace_apps .container_appbox ").html("");
 									that.update_models_in_controllers(); 
 								}else{
-								        $(".workspace_apps .container_appbox ").html("");
-								        $(".workspace_apps .status_workspace").show();
-								        $(".workspace_apps .status_workspace .no_apps").show();
-								        $(".workspace_apps .status_workspace .loading").hide();
+
+								 //       $(".workspace_apps .status_workspace .no_apps").show();
 
 								}
 					}
@@ -101,6 +95,15 @@ define( function(require){
 
 
 			},
+
+			append_new_app: function(){ 
+
+						     var collection_length = AppBox.Collections.current_collection.length;
+						     var last_model = AppBox.Collections.current_collection.at(collection_length-1)  
+						     this.renderApp(last_model)
+
+			},
+
 			update_models_in_controllers : function(){ 
 
 
