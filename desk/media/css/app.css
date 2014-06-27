@@ -5,7 +5,7 @@
 
 
 .app tr:nth-child(2n) {
-	    background: none repeat scroll 0 0 #eee;
+	    background: none repeat scroll 0 0 #f1f2f3;
     }
 
 .app tbody td {
@@ -23,11 +23,11 @@ table.app {
 	    width: 100%;
     }
    .app thead th {
-	    background: none repeat scroll 0 0 #eee;
-	    border-left: 1px solid #bbb;
-	    font-size: 14px;
-	    padding: 9px;
-	    text-align: center;
+	    background: none repeat scroll 0 0 #fafbfc;
+	        border-left: 1px solid #bbb;
+		    font-size: 12px;
+		        padding: 5px;
+			    text-align: center;
 }
 
 .app-str .name {

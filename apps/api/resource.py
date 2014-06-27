@@ -1,4 +1,5 @@
 #encoding:utf-8
+import re 
 from apps.core.models import *
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource , ALL , ALL_WITH_RELATIONS 
@@ -165,13 +166,25 @@ class AppsResource(ModelResource):
 		authorization= Authorization()
 
 	
-	#def obj_create(self, bundle , request = None, ):
+	def obj_create(self, bundle , request = None, ):
 
-		#bundle.obj.name = bundle.data.get("name") 
-		#bundle.obj.workspace = bundle.data.get("workspace") 
-		#bundle.obj.owner = bundle.request.user.id
-		#bundle.obj.save()
-		#return bundle
+		bundle.obj.name = bundle.data.get("name") 
+		bundle.obj.workspace_id  = re.search('\/api\/v1\/workspace\/(\d+)\/', str(bundle.data.get("workspace") )).group(1)
+		bundle.obj.owner_id  = bundle.request.user.id
+		bundle.obj.save()
+		#crea las secciones para la aplicacion por default
+
+		_current_app = bundle.obj
+
+		_current_section = Section.objects.create( name = u"Seccion A")
+		_current_field_in_section = Field.objects.create( data = "Empieza a escribir aqui")
+
+
+		#se guarda la seccion y el campo en una relaci on
+		SectionHasField.objects.create ( field = _current_field_in_section , section =  _current_section )
+		AppHasSection.objects.create( app = _current_app  , section = _current_section )
+
+		return bundle
 
 	
 	#def get_object_list(self, request):

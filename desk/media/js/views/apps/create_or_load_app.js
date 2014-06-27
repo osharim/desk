@@ -23,6 +23,7 @@ define( function(require){
 		var App = {
 			Instance  : {},
 			Model : { },
+			View : { },
 		}
 
 		//crear una aplicacion, solo el nombre,creador, y a que area pertenece
@@ -78,11 +79,74 @@ define( function(require){
 
 		 });
 
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
 
-		 // crear o cargar  las columnas dinamicas e insertarlo en la plantilla html
+
+
+
+
+		var id_application = 0;
+		// carga los datos de una app , campos y secciones 
+		App.Model.data_application = Backbone.Model.extend({    
+					     url : function(){
+						     
+						    var current_id_application = this.attributes.id_application;
+						     return '/api/v1/appsection/?app='+current_id_application;
+					     },
+					 });
+
+
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+
+
+
+
+
+		 // toma todos los datos de una app con secciones y campos y renderiza el template y los inyecta en el DOM
+		 App.View.load_data_from_app_with_sections_and_fields  = Backbone.View.extend({   
+
+		 template_field_section  : require("text!../templates/apps/form_create_app/sections_and_fields.html"),
+
+		 initialize : function(){
+
+			 this.render();
+
+
+		 },render : function(){
+
+			 	     console.log(this)
+
+				     var application_data = this.options.application_data;
+				     console.log(application_data)
+
+				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data } );    
+				     $(".section_").hide();
+				     $(".section_[data-nav=app_desk]").show();
+				     $(".container_app").html(this.$el.html(template_field_and_sections_rendered));
+
+
+		 }
+		 
+		});
+
+
+
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+		/*******************************************************************************************************/
+
+
+
+	         //objeto principal, determina si se require cargar o crear una app
 		 var create_or_load_app = Backbone.View.extend({  
 
-		      	 template_column  : require("text!../templates/apps/form_create_app/column.html"),
 			 options : {
 				 create : false,
 				 id_to_load_application : 0,
@@ -120,23 +184,19 @@ define( function(require){
 
 							console.log(options)
 						    var current_name_app = options.application_name;
+						    var current_id_app = options.id_to_load_application;
 
 						    var $node = $(".section_[data-nav=apps]").show();
 						    $node.find(".app_message").html("Cargando <strong>"+current_name_app+"</strong>");
-
-
-
-				     //pone el template de columnas dinamicas
-				     //var view_column = _.template(this.template_column  );    
-				     //$(".container_app").html(this.$el.html(view_column));
+						    
+						    this.load_data_in_app_and_polled_sections_by_id_app(current_id_app)
 
 
 
 
 			},
 			// si se requiere se crea una nueva aplicacion, solo el nombre el creador y el workspace, la estructura es otro modelo
-			create_new_application : function(){
-
+			create_new_application : function(){ 
 		 				
 					     var aplicacion = new App.Model.new_app();
 					     App.Instance.aplicacion = aplicacion;
@@ -170,17 +230,35 @@ define( function(require){
 								aplicacion.idAttribute  = aplicacion.id;   
 								AppBox.Collections.current_collection.add(aplicacion);  
 
-
-								     //pone el template de columnas dinamicas
-								     var view_column = _.template(self.template_column  );    
-								     $(".container_app").html(self.$el.html(view_column));
-
-
-
+							      //carga los datos (field and sections)  de una app
+							      self.load_data_in_app_and_polled_sections_by_id_app( aplicacion.id );
 							       
 						   }
 						     
 					     });
+
+			},
+
+			/*
+					Summary : Cargamos los datos que tiene una app ,  fields y sections ( Campos y datos) de una app con id en especifico
+					param @id_application(int)
+			*/
+			load_data_in_app_and_polled_sections_by_id_app : function(id_application){
+
+			
+					var data_in_section = new App.Model.data_application( { id_application : id_application });
+
+					data_in_section.fetch({
+					
+							success : function(model,data){
+
+								     console.log(data);
+								     //pone el template de columnas dinamicas
+								     var data_in_application = new App.View.load_data_from_app_with_sections_and_fields({ application_data : data });
+
+					}//success
+					
+					});//fetch
 
 
 
