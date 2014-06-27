@@ -44,3 +44,43 @@ class Apps(models.Model):
     class Meta:
         db_table = u'apps'
 
+
+#datos de una seccion en una aplicacion
+class Field(models.Model):
+
+	data = models.TextField(blank=True)
+
+	class Meta:
+		db_table = u'field'
+
+
+#seccion en una aplicacion
+class Section(models.Model):
+
+	name = models.CharField(max_length=50, blank=True)
+    	date = models.DateTimeField( auto_now_add = True, db_column = "date" ) 
+
+	class Meta:
+		db_table = u'section'
+
+#una seccion tiene muchos datos
+class SectionHasField(models.Model):
+
+    	section = models.ForeignKey(Section,  db_column = "section_id")
+    	field = models.ForeignKey(Field,  db_column = "field_id")
+
+	class Meta:
+		db_table = u'section_has_field'
+
+
+
+#una aplicacion tiene muchas secciones
+class AppHasSection(models.Model):
+
+    	app = models.ForeignKey(Apps,  db_column = "app_id")
+    	section = models.ForeignKey(Section,  db_column = "section_id")
+
+	class Meta:
+		db_table = u'app_has_section'
+
+

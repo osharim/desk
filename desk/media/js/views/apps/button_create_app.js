@@ -8,7 +8,7 @@ define( function(require){
 	 var $           = require('jquery'),  
 	  _           = require('underscore'), 
 	  Backbone    = require('backbone'),
-	  create_app = require('create_app');
+	  create_or_load_app = require('create_or_load_app');
 
 	return (function(){ 
 
@@ -20,7 +20,7 @@ define( function(require){
 		 });
 
 		 //carga el boton para crear un workspaec 
-		 var button_create_app = Backbone.View.extend({  
+		 var button_create_or_load = Backbone.View.extend({  
 
 			 template :  require("text!../templates/apps/button_create_app.html"),
 			 tagName : "div",
@@ -36,12 +36,13 @@ define( function(require){
 			 },
 			  events : { 
 
-				    "click .create_app" : "open_modal_to_create_app", 
+				    "click .create_app" : "click_to_create_or_load", 
 
 			  },
-			   open_modal_to_create_app : function(){   
+			   click_to_create_or_load : function(){   
 
-							      !new create_app()
+							      //se manda el create  para determinar que se quiere crear una app
+							      !new create_or_load_app({ create : true } )
 
 			   }
 
@@ -50,7 +51,7 @@ define( function(require){
 		 });
 
 
-		 return button_create_app;
+		 return button_create_or_load;
 
 
 

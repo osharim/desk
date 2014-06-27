@@ -210,3 +210,100 @@ class WorkSpaceAppsResource(ModelResource):
 
 
 
+
+
+
+#datos de una seccion en una aplicacion
+class FieldResource(ModelResource):
+	class Meta:
+		queryset = Field.objects.all()
+		always_return_data = True
+	    	resource_name = 'field'
+	    	authorization= Authorization()
+
+
+#seccion en una aplicacion
+class SectionResource(ModelResource):
+	class Meta:
+		queryset = Section.objects.all()
+	        always_return_data = True
+	    	resource_name = 'section'
+	    	authorization= Authorization()
+
+
+
+#una seccion tiene muchos datos
+class SectionHasFieldResource(ModelResource):
+
+	section = fields.ForeignKey("apps.api.resource.SectionResource",  full = False , attribute = 'section') 
+	field = fields.ForeignKey("apps.api.resource.FieldResource",  full = True , attribute = 'field') 
+
+  	class Meta:
+
+	    queryset = SectionHasField.objects.all()
+	    allowed_methods = ['get','put','post']
+	    resource_name = 'sectionfield'
+	    always_return_data = True
+	    authorization= Authorization()
+
+    
+	
+	#def get_object_list(self, request):
+
+		 #return super(AllowedUsersResource , self).get_object_list(request).filter( admin = request.user)
+
+
+
+
+#una seccion tiene muchos datos pero no regresa los datos de una seccion, se usa para obtener las secciones de una app con la relacion M2M y no nos regrese datos extra
+class SectionHasFieldWithNoSectionDataResource(ModelResource):
+
+	field = fields.ForeignKey("apps.api.resource.FieldResource",  full = True , attribute = 'field') 
+
+  	class Meta:
+
+	    queryset = SectionHasField.objects.all()
+	    allowed_methods = ['get','put','post']
+	    always_return_data = True
+	    include_resource_uri = False
+	    authorization= Authorization()
+
+
+
+
+#una aplicacion tiene muchas secciones
+class AppHasSectionResource(ModelResource):
+
+	section = fields.ForeignKey("apps.api.resource.SectionResource",  full = True , attribute = 'section') 
+
+	section_fields = fields.ToManyField('apps.api.resource.SectionHasFieldWithNoSectionDataResource', 
+
+			attribute = lambda bundle:       SectionHasField.objects.filter(section = bundle.obj.section ) 
+
+			,null = True
+			,full = True
+	)
+	app = fields.ForeignKey("apps.api.resource.AppsResource",  full = False , attribute = 'app') 
+
+  	class Meta:
+
+	    queryset = AppHasSection.objects.all()
+	    allowed_methods = ['get','put','post']
+	    resource_name = 'appsection'
+	    always_return_data = True
+	    authorization= Authorization()
+	    filtering = {
+		"app" : ["exact"],
+	    }
+
+	def dehydrate(self , bundle):
+		return bundle
+	
+	
+	def get_object_list(self, request):
+
+		 return super(AppHasSectionResource , self).get_object_list(request).filter( app__owner = request.user)
+
+
+
+

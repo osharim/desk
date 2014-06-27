@@ -35,10 +35,10 @@
 
 			{% include "menu.html" %}
 			{% include "sections/workspace_appbox.html" %}
+			{% include "sections/app_desk.html" %}
 			{% include "sections/app.html" %}
 			{% include "sections/dashboard.html" %} 
 			{% include "sections/apps_favorites.html" %} 
-			{% include "sections/new_app.html" %} 
 			{% include "sections/workspace.html" %} 
 			{% include "sections/contact.html" %} 
 			{% include "sections/setting.html" %} 
@@ -69,7 +69,8 @@
 		                 "baseUrl" : "{{ MEDIA_URL }}js/libs/" ,
 			    	 "user" : {
 					   lang : "ES"		    ,
-					   rol :  {{ settings.rol }}
+					   rol :  {{ settings.rol }},
+					   id :  {{ user.id }}
 				   }
 					 
 		};
@@ -104,7 +105,7 @@ require.config({
 
 		       //apps
 			"button_create_app" : "../views/apps/button_create_app", // Boton crear aplicacion 
-			"create_app" : "../views/apps/create_app", // crear aplicacion 
+			"create_or_load_app" : "../views/apps/create_or_load_app", // crear aplicacion 
 			"button_save_app" : "../views/apps/button_save_app", // salvar aplicacion 
 			"appbox" : "../views/apps/apps", // salvar aplicacion 
 			"unique_app" : "../views/apps/unique_app", // app 1:1 con evento al dar click en app 1:1

@@ -36,7 +36,8 @@ define( function(require){
 		           open_workspace : function(e){
 
 
-						    $(".section_[data-nav=apps]").show();
+						    var $node = $(".section_[data-nav=apps]").show();
+						    $node.find(".app_message").html("Aun no has seleccionado ninguna aplicacion");
 						
 					           window.App.Sections.slideRightMainWindow();
 						   //eliminamos todos los menus que fueron seleccionado anteriornente 

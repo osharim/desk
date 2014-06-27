@@ -25,6 +25,7 @@ def index(request):
 		'APP_VERSION' :APP_VERSION ,
 		'PATH_STYLE_CSS' : PATH_STYLE_CSS,
 		'settings' : settings,
+		'user' : user,
 		'PATH_STYLE_JS' :PATH_STYLE_JS 
 	}
 

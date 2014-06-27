@@ -91,6 +91,12 @@ define( function(require){
 
 									    new_model_workspace.save(null  , {  
 
+										    beforeSend : function(){
+
+
+											
+										    },
+
 										    success : function(model , data){ 
 
 										        new_model_workspace.set({ workspace : data } );   

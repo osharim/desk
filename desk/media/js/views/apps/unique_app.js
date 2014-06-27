@@ -6,7 +6,8 @@ define( function(require){
 
 	 var $           = require('jquery'),  
 	  _           = require('underscore'), 
-	  Backbone    = require('backbone');
+	  Backbone    = require('backbone'),
+	  create_or_load_app = require('create_or_load_app');
 
 	return (function(){ 
 
@@ -31,7 +32,11 @@ define( function(require){
 
 				    },
 		           open_app : function(){
-					      console.log("open appp");
+
+					      var current_app_id = this.model.id;
+					      var current_app_name = this.model.get("name")
+
+					      var load_app = new create_or_load_app({ create : false , id_to_load_application : current_app_id , application_name : current_app_name   });
 
 
 

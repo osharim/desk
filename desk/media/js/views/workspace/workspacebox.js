@@ -86,6 +86,8 @@ define( function(require){
 
 						     this.renderWorkspace(last_model)
 
+						    $(".workspace-str li").last().click();
+
 
 
 
