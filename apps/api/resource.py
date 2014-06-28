@@ -259,6 +259,12 @@ class SectionHasFieldResource(ModelResource):
 	    always_return_data = True
 	    authorization= Authorization()
 
+	    filtering = {
+
+			  "section" : ["exact"],
+
+		   }
+
     
 	
 	#def get_object_list(self, request):
@@ -327,10 +333,33 @@ class AddSectionToApplicationResource(ModelResource):
 
 	    queryset = SectionHasField.objects.all()
 	    allowed_methods = ['get','put','post']
-	    always_return_data = False
+	    always_return_data = True
 	    include_resource_uri = False
 	    resource_name = 'addsection'
 	    authorization= Authorization()
+
+
+	def dehydrate(self , bundle):
+
+		fields_ = SectionHasField.objects.filter( section = bundle.obj.section )
+		bundle.data["id_section"] = bundle.obj.section.id
+
+		fields_str = []
+
+		for field in fields_:
+
+			#apuntamos al objecto dentro de la relacion
+			field = field.field
+			fields_str.append({
+
+				"id" : field.id,
+				"data" : field.data
+			})
+
+		bundle.data["fields"] =	fields_str
+
+		return bundle
+
 
 	def obj_create(self, bundle , request = None, ):
 
@@ -351,7 +380,16 @@ class AddSectionToApplicationResource(ModelResource):
 
 			_current_field = Field.objects.create( data = "")
 		        #se guarda la seccion y el campo en una relaci on
-			SectionHasField.objects.create ( field = _current_field  , section =  _current_section )
+			#solo la primera vez que se guarde el dato por obj.save
+			#esto es porque obj.save solo guarda una vez, y necesitamos guardar muchas veces en SectionHasField
+			if i == 0:
+
+				bundle.obj.section_id  = _current_section.id
+				bundle.obj.field_id =  _current_field.id
+				bundle.obj.save()
+			else:
+
+				SectionHasField.objects.create ( field = _current_field  , section =  _current_section )
 
 
 		#bundle.obj.workspace_id  = re.search('\/api\/v1\/workspace\/(\d+)\/', str(bundle.data.get("workspace") )).group(1)

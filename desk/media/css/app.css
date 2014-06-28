@@ -6,7 +6,10 @@
 .config_section {
 	    color: #aaa;
 }
-
+.config_section:hover {
+	color:black;
+	cursor:pointer;
+}
 .app tr:nth-child(2n) {
 	    background: none repeat scroll 0 0 #f1f2f3;
     }
@@ -89,7 +92,7 @@ table.app {
 	    }
 
 
-.current_edit {
+textarea{
 	 background: none repeat scroll 0 0 transparent;
 	     border: 0 none;
 	         float: left;
@@ -100,3 +103,13 @@ table.app {
 				         vertical-align: middle;
 					     width: 99%;
 }
+
+.app tbody td:first-child:hover , .app tbody td:last-child:hover {
+	    border: 1px solid #ccc;
+	        box-shadow: 0 0;
+		    color: #999;
+	    }
+
+.app .btn-group{
+	    position: relative;
+    }

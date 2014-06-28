@@ -184,7 +184,7 @@ src: url('../fonts/Gotham-XLight.ttf');
 	}
 
 .open > .dropdown-menu {
-		display: block;
+		display: block !important;
     }
 .dropdown-menu {
 	 background-clip: padding-box;
