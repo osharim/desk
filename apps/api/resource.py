@@ -296,7 +296,7 @@ class AppHasSectionResource(ModelResource):
 			,null = True
 			,full = True
 	)
-	app = fields.ForeignKey("apps.api.resource.AppsResource",  full = False , attribute = 'app') 
+	app = fields.ForeignKey("apps.api.resource.AppsResource",  full = True , attribute = 'app') 
 
   	class Meta:
 
@@ -318,5 +318,47 @@ class AppHasSectionResource(ModelResource):
 		 return super(AppHasSectionResource , self).get_object_list(request).filter( app__owner = request.user)
 
 
+
+
+#Areggar una nueva seccion a una aplicacion a traves de desk
+class AddSectionToApplicationResource(ModelResource):
+	#field = fields.ForeignKey("apps.api.resource.FieldResource",  full = True , attribute = 'field') 
+  	class Meta:
+
+	    queryset = SectionHasField.objects.all()
+	    allowed_methods = ['get','put','post']
+	    always_return_data = False
+	    include_resource_uri = False
+	    resource_name = 'addsection'
+	    authorization= Authorization()
+
+	def obj_create(self, bundle , request = None, ):
+
+		_current_app_id = bundle.data.get("app") 
+		_max_fields_to_add = bundle.data.get("max_fields_") 
+		_current_section_name = bundle.data.get("section_name_") 
+
+
+		#se crea la seccion con el nombre 
+		_current_section = Section.objects.create( name = _current_section_name )
+
+		#una aplicacion tiene una nueva seccion
+		app_instance = Apps.objects.get( pk = _current_app_id )
+		AppHasSection.objects.create( app = app_instance , section = _current_section )
+
+
+		for i in range(_max_fields_to_add):
+
+			_current_field = Field.objects.create( data = "")
+		        #se guarda la seccion y el campo en una relaci on
+			SectionHasField.objects.create ( field = _current_field  , section =  _current_section )
+
+
+		#bundle.obj.workspace_id  = re.search('\/api\/v1\/workspace\/(\d+)\/', str(bundle.data.get("workspace") )).group(1)
+
+		#bundle.obj.save()
+		#crea las secciones para la aplicacion por default
+
+		return bundle
 
 

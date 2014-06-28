@@ -65,14 +65,12 @@ define( function(require){
 					type : "PUT",
 					data : JSON.stringify(current_name_app),
 					success : function(data){
-						console.log("hoooo updated");
 					},
 
 					dataType : "json",
 					contentType: "application/json",
 
 				});
-		 		console.log( App.Instance.aplicacion)
 			 	 //application.save({ name : "hoo" });
 
 			}
@@ -118,12 +116,80 @@ define( function(require){
 			 this.render();
 
 
-		 },render : function(){
 
-			 	     console.log(this)
+		 },events : {
+		
+		 	"click .add_column" : "add_section", 	 
+		 	"click td" : "edit_value_in_field", 	 
+			
+		 },
+		  edit_value_in_field : function(e){
+
+						/*
+				var _current_field 		=  $(e.currentTarget),
+				    _last_value_in_field 	=  _current_field.html(),
+				    _input_edit 		= '<input class="current_edit" type="text" value='+_last_value_in_field+'>';
+
+
+				    */
+				//_current_field.html(_input_edit);
+
+						console.log("amazing field");
+
+		  },
+		  add_section : function(){
+
+				       var _current_section_name = "Seccion nueva";
+
+				       //se ingresa la nueva columna antes del boton +
+			 		$(".app thead tr th:last-child").before("<th> "+_current_section_name+"</th>")
+			 		//Se guarga la referencia de la tabla de datos
+			 	        var $node_container_data =  $(".container_data"),
+					//cuantos tr existen , (filas) , para cuando se agrege la columna se agregen filas de la misma cantidad
+		 			_node_max_field_length_container_data = $node_container_data.children().length;
+
+
+					_.each ( $node_container_data.children() , function(tr){
+						//se ponen las filas en la nueva columna  al maximo de filas existentes
+						  $( tr ).children(":last-child").before("<td></td>")
+
+					});
+
+					var id_current_app = this.options.application_data.objects[0].app.id;
+
+
+					var data_new_section = { 
+						app : id_current_app  , 
+						section_name_: _current_section_name, 
+						max_fields_  : _node_max_field_length_container_data - 1
+				       	} ; 
+					//crea una seccion y crea N  campos , N = _node_max_field_length_container_data;
+					$.ajax({
+
+
+						url : "/api/v1/addsection/",
+						type : "POST",
+						data : JSON.stringify(data_new_section),
+						success : function(data){
+						},
+
+						dataType : "json",
+						contentType: "application/json",
+					})
+
+
+
+
+
+			 		
+
+		}
+		 ,render : function(){
+
 
 				     var application_data = this.options.application_data;
-				     console.log(application_data)
+			 	    //nombre de la aplicacion actual
+				     $(".current_app").html(application_data.objects[0].app.name);
 
 				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data } );    
 				     $(".section_").hide();
@@ -160,7 +226,6 @@ define( function(require){
  					     !new input_name_app();
 
 
-					     console.log( this.options.create )
 
 					     if( this.options.create ){
 
@@ -182,7 +247,6 @@ define( function(require){
 			load_selected_appliaction : function(options){
 
 
-							console.log(options)
 						    var current_name_app = options.application_name;
 						    var current_id_app = options.id_to_load_application;
 
@@ -252,7 +316,6 @@ define( function(require){
 					
 							success : function(model,data){
 
-								     console.log(data);
 								     //pone el template de columnas dinamicas
 								     var data_in_application = new App.View.load_data_from_app_with_sections_and_fields({ application_data : data });
 

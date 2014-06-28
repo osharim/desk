@@ -36,6 +36,11 @@ define( function(require){
 					      var current_app_id = this.model.id;
 					      var current_app_name = this.model.get("name")
 
+						//eliminamos clase de seleccion
+					      $(".app-str li").removeClass("active") 
+					      //ponemos la clase de seleccion de elemento
+					      $(".app-str li[data-id="+current_app_id+"]").addClass("active")
+
 					      var load_app = new create_or_load_app({ create : false , id_to_load_application : current_app_id , application_name : current_app_name   });
 
 
