@@ -120,21 +120,85 @@ define( function(require){
 		 },events : {
 		
 		 	"click .add_column" : "add_section", 	 
-		 	"click td" : "edit_value_in_field", 	 
+		 	"click td.allow" : "edit_value_in_field", 	 
+		 	"keyup .current_edit" : "data_in_textarea", 	 
+			  
 			
 		 },
+		 // en el textarea al dar enter se guarda el dato y se pierde el foto
+
+		 data_in_textarea  : function(e){
+
+			 console.log(e)
+			 console.log(e.which )
+
+			 var _current_el = $(e.currentTarget);
+			 var _current_key_pressed = e.which;
+			 var _current_value  = _current_el.val()
+			 var _current_id  = _current_el.attr("data-id");
+
+
+			 switch(_current_key_pressed){
+
+				//Enter --Save field
+				 case 13 : 
+
+
+					var new_data = { data : _current_value   };
+					$.ajax({
+
+						url : "/api/v1/field/"+_current_id+"/",
+						type : "PUT",
+						data : JSON.stringify( new_data ),
+						success : function(data){
+						},
+
+						dataType : "json",
+						contentType: "application/json",
+
+					});
+					 //application.save({ name : "hoo" });
+					 _current_el.val().replace(/\v+/g, '');
+
+					 //return false;
+
+
+
+				 break;
+
+				 //tab
+				 case 9	: 
+
+					 console.log("tab")
+					 e.preventDefault();
+
+				 break;
+
+
+
+			 };
+
+			 
+
+		 },
+		  // al dar click en el field se inserta el textarea
 		  edit_value_in_field : function(e){
 
-						/*
-				var _current_field 		=  $(e.currentTarget),
-				    _last_value_in_field 	=  _current_field.html(),
-				    _input_edit 		= '<input class="current_edit" type="text" value='+_last_value_in_field+'>';
+
+			var td_ = $(e.currentTarget);
+
+			//si el td_ actual ya se le dio click entonces ya no hacemos nada.. para no insertar otra ves el elemento, 
+			if( !td_.hasClass("focus")){
 
 
-				    */
-				//_current_field.html(_input_edit);
-
-						console.log("amazing field");
+						var td_data  = td_.html(); 
+						console.log( td_ )
+						var _current_id = $(td_).attr("data-id");
+						var editableText = $("<textarea class='current_edit' data-id="+_current_id+" />");
+						editableText.val(td_data);
+						$(td_).html(editableText).addClass("focus");
+						editableText.focus();
+			}
 
 		  },
 		  add_section : function(){

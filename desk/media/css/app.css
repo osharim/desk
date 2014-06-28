@@ -90,12 +90,13 @@ table.app {
 
 
 .current_edit {
-	    background: none repeat scroll 0 0 transparent;
-	        border: 0 none;
-		    height: 91%;
-		        left: 0;
-			    padding-left: 9%;
-			        position: absolute;
-				    top: 0;
-				        width: 89%;
-				}
+	 background: none repeat scroll 0 0 transparent;
+	     border: 0 none;
+	         float: left;
+		     height: 13px;
+		         padding-bottom: 0;
+			         resize: none;
+				     text-align: center;
+				         vertical-align: middle;
+					     width: 99%;
+}

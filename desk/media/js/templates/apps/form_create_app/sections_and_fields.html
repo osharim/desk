@@ -38,13 +38,13 @@
 
 		<% _.each(data.objects , function(app , key_section ) { %>
 
-			<% _extra_rows_at_end+= _td_start + _td_end; %>
+			<% _extra_rows_at_end+= "<td class='allow'>"+ _td_end; %>
 
 							<% _.each(app.section_fields , function(fields, key_field ) { %>
 
 									<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
 
-									<% _tr[key_field] =  _tr[key_field] +  "<td data-id='"+fields.field.id+"' >" + fields.field.data + _td_end  %>
+									<% _tr[key_field] =  _tr[key_field] +  "<td  contenteditable='true' data-id='"+fields.field.id+"' class='allow'>" + fields.field.data + _td_end  %>
 
 							<% }); %>
 		<% }); %>
