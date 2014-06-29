@@ -417,14 +417,14 @@ define( function(require){
 									   
 									     var _current_el = $(this);
 									         _current_el.html(minimize);
-										 $(".section_[data-nav=app_desk]").animate({ left : 0 },300);
+										 $(".section_[data-nav=app_desk]").animate({ left : 0 });
 										     
 								 }, function() {
 									   
 									   
 									       var _current_el = $(this);
 									          _current_el.html(maximize);
-										   $(".section_[data-nav=app_desk]").animate({ left : 365 },300);
+										   $(".section_[data-nav=app_desk]").animate({ left : 365 });
 										     
 										     
 								 });
