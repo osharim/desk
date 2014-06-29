@@ -43,8 +43,6 @@ html,body,#main_container{
 
 
 .section_ .header {
-	  background: none repeat scroll 0 0 #FFFFFF;
-	    border-bottom: 1px solid #CCCCCC;
 	        float: left;
 		    height: auto;
 		        overflow-y: auto;
@@ -55,7 +53,6 @@ html,body,#main_container{
 
 
 .section_ .header {
-	    border-bottom: 1px solid #CCCCCC;
 	        float: left;
 		    height: auto;
 		        overflow-y: auto;
@@ -84,14 +81,14 @@ html,body,#main_container{
 }
 
 .search {
-	    border: 1px solid #CCCCCC;
+	background: none repeat scroll 0 0 white;
+	    border: 1px solid #cccccc;
 	        border-radius: 3px;
-		    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2) inset;
+		    float: left;
 		        font-family: "gl";
 			    font-size: 13px;
-			    float:left;
-				    padding: 10px;
-				        width: 380px;
+			        padding: 10px;
+				    width: 380px;
 }
 .create_contact {
 	    float: right;

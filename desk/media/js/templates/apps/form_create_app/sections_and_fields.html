@@ -82,15 +82,14 @@
 		<% }); %>
 
 
-		<% var _last_key = 0 %>
+		<% var int_key = 0 %>
 		<% _.each( _tr , function(data_in_tr , key ) { %>
 
-				<%= _tr_start + _td_start +  key + _td_end + data_in_tr +  _td_start +  _td_end + _tr_end      %>
+				<% int_key = parseInt(key) + 1  %>
+				<%= _tr_start + _td_start + int_key   + _td_end + data_in_tr +  _td_start +  _td_end + _tr_end      %>
 
-				<% _last_key = parseInt(key) %>
 		<% }) %>
 
-		<% _last_key+=1; %>
 
 
 

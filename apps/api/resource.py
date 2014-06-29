@@ -340,7 +340,7 @@ class SectionHasFieldWithNoSectionDataResource(ModelResource):
 
   	class Meta:
 
-	    queryset = SectionHasField.objects.all().order_by("field__date")
+	    queryset = SectionHasField.objects.all()
 	    allowed_methods = ['get','put','post']
 	    always_return_data = True
 	    include_resource_uri = False

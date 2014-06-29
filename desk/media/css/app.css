@@ -15,10 +15,9 @@
     }
 
 .app tbody td {
-	    color: #333;
-	        border: 1px solid #ccc;
-	        font-size: 12px;
-		    padding: 14px 0;
+	   color: #333;
+	       font-size: 12px;
+	           padding: 14px 0;
 	    }
 
 
@@ -32,16 +31,17 @@
 	}
 
 table.app {
-	 text-align: center;
 	  margin-bottom: 200px;
-	    width: 100%;
+	      text-align: center;
+	          width: 100%;
     }
    .app thead th {
-	    background: none repeat scroll 0 0 #fafbfc;
-	        border-left: 1px solid #bbb;
-		    font-size: 12px;
-		        padding: 5px;
-			    text-align: center;
+	       background: none repeat scroll 0 0 #fafbfc;
+	           font-family: "gb";
+		       font-size: 12px;
+		           padding: 17px 33px;
+			       text-align: center;
+			           text-transform: capitalize;
 }
 
 .app-str .name {
@@ -122,3 +122,6 @@ textarea{
 	cursor:pointer;
 
 }
+  .str_section.container_app {
+	      padding: 0;
+      }
