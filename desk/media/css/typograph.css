@@ -1,0 +1,23 @@
+
+@font-face {     
+
+	font-family: 'gl';   
+	font-style: normal;    
+src: url('../fonts/Gotham-Light.ttf'); 
+}
+
+@font-face {     
+
+	font-family: 'gb';   
+	font-style: normal;    
+src: url('../fonts/Gotham-Book.ttf');    
+}
+
+@font-face {     
+
+	font-family: 'gxl';   
+	font-style: normal;    
+src: url('../fonts/Gotham-XLight.ttf'); 
+}
+
+

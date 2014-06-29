@@ -163,8 +163,73 @@ define( function(require){
 		//se agregan fields al final de la aplicacion
 		add_fields_at_end : function(e){
 
-					    console.log("end")
-					    //$(e.currentTarget).addClass("allow").click() 
+				 //se quita el evento para agregar filas 
+				$(e.currentTarget).unbind("click");
+				$(".last_allow").removeClass("last_allow").addClass("allow");
+
+				//reload edit fields
+				$(".allow").editable("destroy");
+				this.edit_value_in_field();
+
+
+
+				var last_fields = "<tr>";
+				var $sections = $(".edit_section");
+				var sections_length =  $sections.length
+
+				//ids de las secciones que se les agregara un campo extra
+				var id_sections = [];
+				_.each( $sections , function(th){
+					  
+					  id_sections.push( parseInt( $(th).attr("data-id")) );
+				});
+
+
+
+
+				var new_data = { max_fields_ : sections_length ,  section_id_ : id_sections };
+
+				$.ajax({
+
+					url : "/api/v1/sectionfield/",
+					type : "POST",
+					data : JSON.stringify( new_data ),
+					success : function(data){
+						
+
+						var $last_id_number_in_section_id = $(".container_data tr").last().children().first().html();
+						var last_id_number = parseInt($last_id_number_in_section_id);
+						last_id_number +=1;
+
+						var _td_in_section_id = "<td>"+last_id_number+"</td>";
+						var _td_in_add_section  = "<td></td>";
+
+						last_fields += _td_in_section_id;
+
+
+						last_field = "";
+						for(var i = 0; i <  data.fields.length  ; i++){ 
+							
+							last_fields += "<td class='last_allow' data-id="+data.fields[i].id+"></td>";
+					       
+						}
+
+						last_fields += _td_in_add_section;
+						last_fields += "</tr>";
+
+						$(".container_data").append(last_fields);
+
+
+
+
+
+					}, dataType : "json",
+					contentType: "application/json",
+
+				});
+
+
+				$(e.currentTarget).addClass("allow").click() 
 
 		},
 		 // iniciamos que puedan editar los campos al dar click
@@ -222,7 +287,7 @@ define( function(require){
 					var data_new_section = { 
 						app : id_current_app  , 
 						section_name_: _current_section_name, 
-						max_fields_  : _node_max_field_length_container_data - 1
+						max_fields_  : _node_max_field_length_container_data
 				       	} ; 
 					//crea una seccion y crea N  campos , N = _node_max_field_length_container_data;
 					$.ajax({
@@ -233,7 +298,6 @@ define( function(require){
 						data : JSON.stringify(data_new_section),
 						success : function(data){
 
-							console.log(data)
 
 						       var _current_section_name = data.section_name_ 
 
@@ -245,6 +309,7 @@ define( function(require){
 						 	$(".edit_section .name").editable("destroy");
 							self.edit_section_name();
 
+							//contenedor de los datos --> fields
 							$childs_node = $node_container_data.children()
 						
 							_.each ( data.fields , function(data, keys ){
@@ -254,8 +319,7 @@ define( function(require){
 
 							});
 
-							console.log( $($childs_node[ _node_max_field_length_container_data - 1 ]))
-							$($childs_node[ _node_max_field_length_container_data -1 ]).children(":last-child").before("<td class='last_allow'></td>")
+							$($childs_node[ _node_max_field_length_container_data  ]).children(":last-child").before("<td class='last_allow'></td>")
 
 							//reload edit fields
 						 	$(".allow").editable("destroy");

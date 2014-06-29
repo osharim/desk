@@ -16,6 +16,7 @@
 			<span class="name"><%= app.section.name  %>   </span>
 
 
+			<!--
 			<span class="config_section"> 
 		       
 				     <div class="btn-group open">
@@ -32,6 +33,7 @@
 	
 		
 			</span>    
+			-->
 
 
 
@@ -52,21 +54,31 @@
 		<%  var _tr_end = '</tr>' %>
 		<%  var _td_start = '<td>' %>
 		<%  var _td_end = '</td>' %>
-		<% var _extra_rows_at_end='' %>
 
 		<%  _tr  = []   %>
 
 		<% _.each(data.objects , function(app , key_section ) { %>
 
-			<% _extra_rows_at_end+= "<td  class='last_allow'> "+ _td_end; %>
 
-							<% _.each(app.section_fields , function(fields, key_field ) { %>
+				<% var max_length_fields = app.section_fields.length %>
 
-									<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
+				<% _.each(app.section_fields , function(fields, key_field ) { %>
 
-									<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.field.id+"' class='allow'>" + fields.field.data + _td_end  %>
+						<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
 
-							<% }); %>
+						<% if( max_length_fields == key_field+1){ %>
+
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.field.id+"' class='last_allow'>" + fields.field.data + _td_end  %>
+
+						<% }else{ %>
+
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.field.id+"' class='allow'>" + fields.field.data + _td_end  %>
+
+						<% } %>
+
+				<% }); %>
+
+				
 		<% }); %>
 
 
@@ -80,7 +92,6 @@
 
 		<% _last_key+=1; %>
 
-		<%= _tr_start + _td_start +  _last_key  + _td_end + _extra_rows_at_end +  _td_start +  _td_end + _tr_end      %>
 
 
 

@@ -49,6 +49,7 @@ class Apps(models.Model):
 class Field(models.Model):
 
 	data = models.TextField(blank=True)
+    	date = models.DateTimeField( auto_now_add = True, db_column = "date" ) 
 
 	class Meta:
 		db_table = u'field'

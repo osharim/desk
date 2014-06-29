@@ -33,6 +33,7 @@
 
 table.app {
 	 text-align: center;
+	  margin-bottom: 200px;
 	    width: 100%;
     }
    .app thead th {
@@ -113,3 +114,11 @@ textarea{
 .app .btn-group{
 	    position: relative;
     }
+
+
+.name:hover{
+
+	color:#aaa;
+	cursor:pointer;
+
+}

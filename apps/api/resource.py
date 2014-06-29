@@ -176,12 +176,14 @@ class AppsResource(ModelResource):
 
 		_current_app = bundle.obj
 
-		_current_section = Section.objects.create( name = u"Seccion A")
-		_current_field_in_section = Field.objects.create( data = "Empieza a escribir aqui")
+		_current_section = Section.objects.create( name = u"Nueva seccion")
+		for i in range(5):
 
+			_current_field_in_section = Field.objects.create( data = "Empieza a escribir aqui")
 
-		#se guarda la seccion y el campo en una relaci on
-		SectionHasField.objects.create ( field = _current_field_in_section , section =  _current_section )
+			#se guarda la seccion y el campo en una relaci on
+			SectionHasField.objects.create ( field = _current_field_in_section , section =  _current_section )
+
 		AppHasSection.objects.create( app = _current_app  , section = _current_section )
 
 		return bundle
@@ -246,6 +248,7 @@ class SectionResource(ModelResource):
 
 
 #una seccion tiene muchos datos
+#esta api se encarga de crear las ultimas filas de una seccion --------
 class SectionHasFieldResource(ModelResource):
 
 	section = fields.ForeignKey("apps.api.resource.SectionResource",  full = False , attribute = 'section') 
@@ -265,7 +268,63 @@ class SectionHasFieldResource(ModelResource):
 
 		   }
 
-    
+
+ 	def dehydrate(self , bundle):
+
+		fields_ =  bundle.data["field_instalce"]
+		fields_str = []
+
+		for field in fields_:
+
+
+			fields_str.append({
+
+				"id" : field.field.id,
+				"data" : field.field.data,
+				"section" : field.section.id
+			})
+
+		bundle.data["fields"] =	fields_str
+
+		del bundle.data["field"] 
+		del bundle.data["field_instalce"] 
+		del bundle.data["section_id_"] 
+
+		return bundle
+
+
+	def obj_create(self, bundle , request = None, ):
+
+		_max_fields_to_add = bundle.data.get("max_fields_") 
+		_current_section_id  = bundle.data.get("section_id_") 
+
+
+		fields_created = []
+
+		for i in range(_max_fields_to_add):
+
+			_current_field = Field.objects.create( data = "")
+
+		        #se guarda la seccion y el campo en una relaci on
+			#solo la primera vez que se guarde el dato por obj.save
+			#esto es porque obj.save solo guarda una vez, y necesitamos guardar muchas veces en SectionHasField
+			instance_section  =  Section.objects.get(pk = _current_section_id[i])
+			if i == 0:
+
+				bundle.obj.section_id  = instance_section.id
+				bundle.obj.field_id =  _current_field.id
+				bundle.obj.save()
+				fields_created.append( bundle.obj )
+			else:
+
+				obj_field_section = SectionHasField.objects.create ( field = _current_field  , section =  instance_section  )
+				fields_created.append( obj_field_section )
+
+		bundle.data["field_instalce"] = fields_created
+
+		return bundle
+
+   
 	
 	#def get_object_list(self, request):
 
@@ -281,7 +340,7 @@ class SectionHasFieldWithNoSectionDataResource(ModelResource):
 
   	class Meta:
 
-	    queryset = SectionHasField.objects.all()
+	    queryset = SectionHasField.objects.all().order_by("field__date")
 	    allowed_methods = ['get','put','post']
 	    always_return_data = True
 	    include_resource_uri = False
@@ -390,12 +449,6 @@ class AddSectionToApplicationResource(ModelResource):
 			else:
 
 				SectionHasField.objects.create ( field = _current_field  , section =  _current_section )
-
-
-		#bundle.obj.workspace_id  = re.search('\/api\/v1\/workspace\/(\d+)\/', str(bundle.data.get("workspace") )).group(1)
-
-		#bundle.obj.save()
-		#crea las secciones para la aplicacion por default
 
 		return bundle
 
