@@ -16,3 +16,4 @@ rq==0.4.6
 six==1.6.1
 static==1.0.2
 wsgiref==0.1.2
+gunicorn==18.0

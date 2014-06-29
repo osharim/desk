@@ -1,2 +1,3 @@
 desk_env/
-.pyc
+*.pyc
+staticfiles
