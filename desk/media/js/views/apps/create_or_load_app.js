@@ -247,7 +247,7 @@ define( function(require){
 
 						callback : function( data ) {
 							// Callback that will be called once the editor is blurred
-							if( data.content ) {
+							if( data.content.length >= 0 ) {
 
 								var new_data = { data : data.content };
 
@@ -381,6 +381,9 @@ define( function(require){
 			 },
 			 initialize : function(){
 
+
+
+
 				 	     //boton salvar la app --- Ya no hay bton de salvar, los datos se guardan automagicamente
 				 	     //!new button_save_app();
  					     !new input_name_app();
@@ -401,8 +404,32 @@ define( function(require){
 				 	     // se muestra la seccion de nueva aplicacion
 					     $(".section_[data-nav=creating_app]").show()
 					     $(".section_[data-nav=workspace]").hide()
+					     this._maximize_and_minimize_button();
 
 		        },
+			 _maximize_and_minimize_button : function(){
+
+								 var maximize = "<i class='glyphicon glyphicon-fullscreen'></i> Maximizar",
+								     minimize = "<i class='glyphicon glyphicon-resize-small'></i> Minimizar";
+								  
+
+								 $( ".full_screen" ).toggle(function() {
+									   
+									     var _current_el = $(this);
+									         _current_el.html(minimize);
+										 $(".section_[data-nav=app_desk]").animate({ left : 0 },300);
+										     
+								 }, function() {
+									   
+									   
+									       var _current_el = $(this);
+									          _current_el.html(maximize);
+										   $(".section_[data-nav=app_desk]").animate({ left : 365 },300);
+										     
+										     
+								 });
+
+			},
 			// carga los datos de una aplicacion 
 			load_selected_appliaction : function(options){
 
