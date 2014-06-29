@@ -154,3 +154,17 @@ textarea{
 	      margin: 5px !important;
 	          padding: 9px !important;
 	}
+
+.full_screen {
+	 color: black; 
+	     cursor: pointer;
+	         font-size: 12px;
+		     margin-left: 10px;
+		         margin-right: 0;
+			     padding: 14px;
+		}
+
+
+.full_screen:active {
+	 color: #ccc;
+}
