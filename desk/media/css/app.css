@@ -23,7 +23,8 @@
 
 
 .app tbody td:first-child {
-	    color: #999;
+	 background: none repeat scroll 0 0 #fafbfc;
+	     color: #bbb;
 }
 
 .app thead {
@@ -72,8 +73,12 @@ table.app {
 
    .appbox .head {
 	       margin-bottom: 11px !important;
+	         color: #999;
        }
 
+       .appbox .head .glyphicon {
+	           color: inherit;
+	   }
    .config_section {
 	           float: right;
 		       padding: 0 10px;
@@ -168,3 +173,8 @@ textarea{
 .full_screen:active {
 	 color: #ccc;
 }
+
+.app thead th:first-child {
+	    color: #bbb;
+    }
+

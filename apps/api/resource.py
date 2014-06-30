@@ -1,5 +1,6 @@
 #encoding:utf-8
 import re 
+from django.conf import settings as set_django 
 from apps.core.models import *
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource , ALL , ALL_WITH_RELATIONS 
@@ -9,9 +10,228 @@ from tastypie import fields
 from django.core import serializers
 from django.db.models import Q , F
 from datetime import date 
+from tastypie.paginator import Paginator
 
 
-class UsuarioResource(ModelResource): 
+class PageNumberPaginator(object):
+
+    """
+        Limits result sets down to sane amounts for passing to the client.
+        
+        This is used in place of Django's ``Paginator`` due to the way pagination
+        works. ``limit`` & ``offset`` (tastypie) are used in place of ``page``
+        (Django) so none of the page-related calculations are necessary.
+        
+        This implementation also provides additional details like the
+        ``total_count`` of resources seen and convenience links to the
+        ``previous``/``next`` pages of data as available.
+        """
+    def __init__(self, request_data, objects, resource_uri=None, limit=None, offset=0, max_limit=1000, collection_name='objects'):
+        """
+            Instantiates the ``Paginator`` and allows for some configuration.
+            
+            The ``request_data`` argument ought to be a dictionary-like object.
+            May provide ``limit`` and/or ``offset`` to override the defaults.
+            Commonly provided ``request.GET``. Required.
+            
+            The ``objects`` should be a list-like object of ``Resources``.
+            This is typically a ``QuerySet`` but can be anything that
+            implements slicing. Required.
+            
+            Optionally accepts a ``limit`` argument, which specifies how many
+            items to show at a time. Defaults to ``None``, which is no limit.
+            
+            Optionally accepts an ``offset`` argument, which specifies where in
+            the ``objects`` to start displaying results from. Defaults to 0.
+            
+            Optionally accepts a ``max_limit`` argument, which the upper bound
+            limit. Defaults to ``1000``. If you set it to 0 or ``None``, no upper
+            bound will be enforced.
+            """
+
+	id_application = int(request_data.get("application"))
+	application  = Apps.objects.filter( id = id_application )[0]
+
+	current_app_has_section = AppHasSection.objects.filter(app = application )
+	
+
+	#get max sections available in app
+	max_sections_in_application = current_app_has_section.count()
+
+	#get max rows in sections available in section
+	_fields = SectionHasField.objects.filter( section = current_app_has_section[0].section )
+	max_fields_in_section = _fields.count()
+	print max_fields_in_section, max_sections_in_application
+
+	new_limit = max_fields_in_section * max_sections_in_application
+	#sobreescribirmos el limite
+	limit = new_limit
+
+        self.request_data = request_data
+        self.objects = objects
+        self.limit = limit
+        self.max_limit = max_limit
+        self.offset = offset
+        self.resource_uri = resource_uri
+        self.collection_name = collection_name
+    
+    def get_limit(self):
+        """
+            Determines the proper maximum number of results to return.
+            
+            In order of importance, it will use:
+            
+            * The user-requested ``limit`` from the GET parameters, if specified.
+            * The object-level ``limit`` if specified.
+            * ``settings.API_LIMIT_PER_PAGE`` if specified.
+            
+            Default is 20 per page.
+            """
+        
+        limit = self.request_data.get('limit', self.limit)
+        if limit is None:
+            limit = getattr(settings, 'API_LIMIT_PER_PAGE', 20)
+        
+        try:
+            limit = int(limit)
+        except ValueError:
+            raise BadRequest("Invalid limit '%s' provided. Please provide a positive integer." % limit)
+        
+        if limit < 0:
+            raise BadRequest("Invalid limit '%s' provided. Please provide a positive integer >= 0." % limit)
+        
+        if self.max_limit and (not limit or limit > self.max_limit):
+            # If it's more than the max, we're only going to return the max.
+            # This is to prevent excessive DB (or other) load.
+            return self.max_limit
+        
+        return limit
+    
+    def get_offset(self):
+        """
+            Determines the proper starting offset of results to return.
+            
+            It attempts to use the user-provided ``offset`` from the GET parameters,
+            if specified. Otherwise, it falls back to the object-level ``offset``.
+            
+            Default is 0.
+            """
+        offset = self.offset
+        
+        if 'offset' in self.request_data:
+            offset = self.request_data['offset']
+        
+        try:
+            offset = int(offset)
+        except ValueError:
+            raise BadRequest("Invalid offset '%s' provided. Please provide an integer." % offset)
+        
+        if offset < 0:
+            raise BadRequest("Invalid offset '%s' provided. Please provide a positive integer >= 0." % offset)
+        
+        return offset
+    
+    def get_slice(self, limit, offset):
+        """
+            Slices the result set to the specified ``limit`` & ``offset``.
+            """
+        if limit == 0:
+            return self.objects[offset:]
+        
+        return self.objects[offset:offset + limit]
+    
+    def get_count(self):
+        """
+            Returns a count of the total number of objects seen.
+            """
+        try:
+            return self.objects.count()
+        except (AttributeError, TypeError):
+            # If it's not a QuerySet (or it's ilk), fallback to ``len``.
+            return len(self.objects)
+    
+    def get_previous(self, limit, offset):
+        """
+            If a previous page is available, will generate a URL to request that
+            page. If not available, this returns ``None``.
+            """
+        if offset - limit < 0:
+            return None
+        
+        return self._generate_uri(limit, offset-limit)
+    
+    def get_next(self, limit, offset, count):
+        """
+            If a next page is available, will generate a URL to request that
+            page. If not available, this returns ``None``.
+            """
+        if offset + limit >= count:
+            return None
+        
+        return self._generate_uri(limit, offset+limit)
+    
+    def _generate_uri(self, limit, offset):
+        if self.resource_uri is None:
+            return None
+        
+        try:
+            # QueryDict has a urlencode method that can handle multiple values for the same key
+            request_params = self.request_data.copy()
+            if 'limit' in request_params:
+                del request_params['limit']
+            if 'offset' in request_params:
+                del request_params['offset']
+            request_params.update({'limit': limit, 'offset': offset})
+            encoded_params = request_params.urlencode()
+        except AttributeError:
+            request_params = {}
+            
+            for k, v in self.request_data.items():
+                if isinstance(v, six.text_type):
+                    request_params[k] = v.encode('utf-8')
+                else:
+                    request_params[k] = v
+            
+            if 'limit' in request_params:
+                del request_params['limit']
+            if 'offset' in request_params:
+                del request_params['offset']
+            request_params.update({'limit': limit, 'offset': offset})
+            encoded_params = urlencode(request_params)
+        
+        return '%s?%s' % (
+                          self.resource_uri,
+                          encoded_params
+                          )
+    
+    def page(self):
+        """
+            Generates all pertinent data about the requested page.
+            
+            Handles getting the correct ``limit`` & ``offset``, then slices off
+            the correct set of results and returns all pertinent metadata.
+            """
+        limit = self.get_limit()
+        offset = self.get_offset()
+        count = self.get_count()
+        objects = self.get_slice(limit, offset)
+        meta = {
+            'offset': offset,
+            'limit': limit,
+            'total_count': count,
+        }
+        
+        if limit:
+            meta['previous'] = self.get_previous(limit, offset)
+            meta['next'] = self.get_next(limit, offset, count)
+        
+        return {
+            self.collection_name: objects,
+            'meta': meta,
+    }
+
+
+class UsuarioResource(ModelResource):
 
 	class Meta:
 		queryset = User.objects.all().order_by("-date_joined") 
@@ -188,15 +408,6 @@ class AppsResource(ModelResource):
 
 		return bundle
 
-	
-	#def get_object_list(self, request):
-
-		 #return super(WorkspaceResource, self).get_object_list(request).filter( owner = request.user)
-
-
-
-
-
 
 
 #Todas las apps que un workspace tiene
@@ -340,7 +551,7 @@ class SectionHasFieldWithNoSectionDataResource(ModelResource):
 
   	class Meta:
 
-	    queryset = SectionHasField.objects.all()
+	    queryset = SectionHasField.objects.all().order_by("-field__date")
 	    allowed_methods = ['get','put','post']
 	    always_return_data = True
 	    include_resource_uri = False
@@ -352,35 +563,103 @@ class SectionHasFieldWithNoSectionDataResource(ModelResource):
 #una aplicacion tiene muchas secciones
 class AppHasSectionResource(ModelResource):
 
+	field = fields.ForeignKey("apps.api.resource.FieldResource",  full = True , attribute = 'field') 
 	section = fields.ForeignKey("apps.api.resource.SectionResource",  full = True , attribute = 'section') 
-
-	section_fields = fields.ToManyField('apps.api.resource.SectionHasFieldWithNoSectionDataResource', 
-
-			attribute = lambda bundle:       SectionHasField.objects.filter(section = bundle.obj.section ) 
-
-			,null = True
-			,full = True
-	)
-	app = fields.ForeignKey("apps.api.resource.AppsResource",  full = True , attribute = 'app') 
 
   	class Meta:
 
-	    queryset = AppHasSection.objects.all()
+	    queryset = SectionHasField.objects.all().order_by("field__date")
 	    allowed_methods = ['get','put','post']
 	    resource_name = 'appsection'
 	    always_return_data = True
 	    authorization= Authorization()
-	    filtering = {
-		"app" : ["exact"],
-	    }
+	    paginator_class = PageNumberPaginator
+
+	def _get_all_fiels_from_section(self , all_data , current_id ):
+
+		_fields = []
+
+		for _field in all_data:
+
+			if _field.data["section"].data["id"] == current_id:
+
+				_fields.append({
+
+					"data" : _field.data["field"].data["data"] ,
+					"id" : _field.data["field"].data["id"]
+				})
+
+
+		return _fields
+
+	    
+	def alter_list_data_to_serialize(self, request, data):
+
+
+		id_application = int(request.GET.get("application"))
+		application  = Apps.objects.filter( owner = request.user , id = id_application )[0]
+
+
+		all_data =   data["objects"]
+
+		_data_json_field_and_section = []
+		_all_sections= []
+
+		for data_field in all_data:
+
+			print data_field.data["section"].data["id"] 
+
+			if data_field.data["section"].data["id"] not in _all_sections:
+
+				#save not duplicated fields
+				_current_section_id =  data_field.data["section"].data["id"]
+				_all_sections.append( _current_section_id )
+
+				_data_json_field_and_section.append({ 
+					
+					 "name" :  data_field.data["section"].data["name"],
+					 "section" : { 
+
+					  		"name" :  data_field.data["section"].data["name"],
+							"id" :  data_field.data["section"].data["id"],
+					 },
+
+					 "section_fields" : self._get_all_fiels_from_section( all_data , _current_section_id ) 
+					
+				})
+
+
+				
+
+		#Metemos los datos de la app a META
+		META = data["meta"]
+		META["app"] = { "app" : application.name , "id" : application.id  }
+		data["meta"] = META
+
+		#se agreagn los campos agrupados por seccion
+		#Agregamos los datos agrupados a objects
+		data["objects"] = _data_json_field_and_section 
+
+		return data
+
+
 
 	def dehydrate(self , bundle):
+
 		return bundle
 	
 	
 	def get_object_list(self, request):
 
-		 return super(AppHasSectionResource , self).get_object_list(request).filter( app__owner = request.user)
+		id_app  =  int(request.GET.get("application"))
+
+		all_sections_in_application = AppHasSection.objects.filter( app = id_app , app__owner = request.user )
+
+		sections_length = all_sections_in_application.count()
+
+		allowed_sections_has_fields  = super(AppHasSectionResource , self).get_object_list(request).filter( section__in = all_sections_in_application ) 
+
+		return allowed_sections_has_fields 
 
 
 
@@ -431,7 +710,8 @@ class AddSectionToApplicationResource(ModelResource):
 		_current_section = Section.objects.create( name = _current_section_name )
 
 		#una aplicacion tiene una nueva seccion
-		app_instance = Apps.objects.get( pk = _current_app_id )
+		app_instance = Apps.objects.get( pk = _current_app_id , owner = bundle.request.user  )
+
 		AppHasSection.objects.create( app = app_instance , section = _current_section )
 
 

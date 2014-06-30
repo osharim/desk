@@ -13,7 +13,17 @@ Desk
 		<!-- 
 		 <a href="#!/aplicaciones/favoritas/"><li data-path="apps">  <i class="glyphicon glyphicon-star"></i><div>Applicaciones  Favoritas</div>  </li> </a> 
 		 -->
-		<span class="current_section">Areas De Trabajo <span class="btn_add_workspace "> </span></span>
+		{% if settings.rol != '0'  %}
+
+			<a href="#!/contactos/"><li data-path="contact">  <i class="glyphicon glyphicon-user"></i><div>Contactos</div>  </li> </a> 
+			<!-- <a href="#!/ajustes/"><li data-path="setting">  <i class="icon profile"></i><div>Ajustes</div>  </li> </a>  -->
+
+		{% endif %}
+
+
+
+
+		<span class="current_section">Areas de trabajo <span class="btn_add_workspace "> </span></span>
 		
 		<div class="menu main_color_bg workspace_box">
 
@@ -26,14 +36,6 @@ Desk
 </div>
 
 <!-- 		<a href="#!/workspace/"><li data-path="workspace">  <i class="glyphicon glyphicon-inbox"></i><div>Areas de trabajo</div>  </li> </a>  -->
-
-		{% if settings.rol != '0'  %}
-
-			<a href="#!/contactos/"><li data-path="contact">  <i class="glyphicon glyphicon-user"></i><div>Contactos</div>  </li> </a> 
-			<!-- <a href="#!/ajustes/"><li data-path="setting">  <i class="icon profile"></i><div>Ajustes</div>  </li> </a>  -->
-
-		{% endif %}
-
 
 
 	</ul>

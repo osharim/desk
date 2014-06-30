@@ -68,11 +68,11 @@
 
 						<% if( max_length_fields == key_field+1){ %>
 
-							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.field.id+"' class='last_allow'>" + fields.field.data + _td_end  %>
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='last_allow'>" + fields.data + _td_end  %>
 
 						<% }else{ %>
 
-							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.field.id+"' class='allow'>" + fields.field.data + _td_end  %>
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='allow'>" + fields.data + _td_end  %>
 
 						<% } %>
 

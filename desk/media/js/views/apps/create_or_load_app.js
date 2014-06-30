@@ -93,7 +93,7 @@ define( function(require){
 					     url : function(){
 						     
 						    var current_id_application = this.attributes.id_application;
-						     return '/api/v1/appsection/?app='+current_id_application;
+						     return '/api/v1/appsection/?application='+current_id_application;
 					     },
 					 });
 
@@ -278,8 +278,10 @@ define( function(require){
 					var self = this;
 
 
+					    console.log(this)
+
 					var $node_container_data =  $(".container_data"),
-					id_current_app = this.options.application_data.objects[0].app.id,
+					id_current_app = this.options.application_data.meta.app.id,
 					_current_section_name = "Nueva seccion",
 					_node_max_field_length_container_data = $node_container_data.children().length; 
 
@@ -345,7 +347,7 @@ define( function(require){
 
 				     var application_data = this.options.application_data;
 			 	    //nombre de la aplicacion actual
-				     $(".current_app").html(application_data.objects[0].app.name);
+				     $(".current_app").html(application_data.meta.app.name);
 
 				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data } );    
 				     $(".section_").hide();
@@ -409,23 +411,40 @@ define( function(require){
 		        },
 			 _maximize_and_minimize_button : function(){
 
+								 var mutex_fullscreen = false;
+
 								 var maximize = "<i class='glyphicon glyphicon-fullscreen'></i> Maximizar",
 								     minimize = "<i class='glyphicon glyphicon-resize-small'></i> Minimizar";
 								  
 
 								 $( ".full_screen" ).toggle(function() {
 									   
+									 if ( !mutex_fullscreen ){
+
+										 mutex_fullscreen = true;
 									     var _current_el = $(this);
 									         _current_el.html(minimize);
-										 $(".section_[data-nav=app_desk]").animate({ left : 0 });
+										 $(".section_[data-nav=app_desk]").animate({ left : 0 },
+											 
+										function(){
+											mutex_fullscreen = false;
+										});
+									 }
 										     
 								 }, function() {
 									   
+									 if ( !mutex_fullscreen ){
 									   
+									      mutex_fullscreen = true;
 									       var _current_el = $(this);
 									          _current_el.html(maximize);
-										   $(".section_[data-nav=app_desk]").animate({ left : 365 });
-										     
+
+										   $(".section_[data-nav=app_desk]").animate({ left : 365 } ,
+											function(){
+												mutex_fullscreen = false;
+										});
+
+									 }     
 										     
 								 });
 
