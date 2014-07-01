@@ -1,5 +1,11 @@
 #encoding:utf-8 
 import os,sys
+import dj_database_url
+
+
+
+DATABASES['default'] =  dj_database_url.config()
+dev = False
 
 
 APP_VERSION = '0.0.1'
@@ -25,8 +31,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
+if dev:
+	DATABASES = {
+    	'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'desk',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
