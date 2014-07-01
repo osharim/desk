@@ -1,5 +1,6 @@
 #encoding:utf-8
 import re 
+import urllib
 from django.conf import settings as set_django 
 from apps.core.models import *
 from django.contrib.auth.models import User
@@ -58,6 +59,8 @@ class PageNumberPaginator(object):
 	#get max sections available in app
 	max_sections_in_application = current_app_has_section.count()
 
+	print max_sections_in_application , current_app_has_section
+
 
 	#get max rows in sections available in section
 	_fields = SectionHasField.objects.filter( section = current_app_has_section[0].section )
@@ -69,9 +72,10 @@ class PageNumberPaginator(object):
 	#si la suma de todas las columnas y campos nos general mas de 20 rows entonces lo ajustamos para paginacion
 	new_limit_by_20 = max_sections_in_application * max_rows_in_application 
 
-	#sino entonces mostramos todos los datos
+
 	new_limit = max_fields_in_section * max_sections_in_application
 
+	print  max_sections_in_application ,  max_rows_in_application , max_rows_in_application
 	#sobreescribirmos el limite
 	limit = new_limit if new_limit <= max_rows_in_application else new_limit_by_20 
 
@@ -580,77 +584,113 @@ class SectionHasFieldWithNoSectionDataResource(ModelResource):
 #una aplicacion tiene muchas secciones
 class AppHasSectionResource(ModelResource):
 
-	field = fields.ForeignKey("apps.api.resource.FieldResource",  full = True , attribute = 'field') 
+	app  = fields.ForeignKey("apps.api.resource.AppsResource",  full = True , attribute = 'app') 
 	section = fields.ForeignKey("apps.api.resource.SectionResource",  full = True , attribute = 'section') 
 
   	class Meta:
 
-	    queryset = SectionHasField.objects.all().order_by("field__date")
+	    queryset = AppHasSection.objects.all()#.order_by("field__date")
 	    allowed_methods = ['get','put','post']
 	    resource_name = 'appsection'
 	    always_return_data = True
 	    authorization= Authorization()
-	    paginator_class = PageNumberPaginator
+	    filtering = {
+			    "app"  : ["exact"],
+			}
 
-	def _get_all_fiels_from_section(self , all_data , current_id ):
+
+	    #paginator_class = PageNumberPaginator
+
+	def _get_all_fiels_from_section(self ,  current_id_section ):
 
 
 		_fields = []
 
-		for key ,_field   in enumerate(all_data):
+		print self.slice_end , self.slice_start , self.limit_data ,"in get"
 
-			if _field.data["section"].data["id"] == current_id:
+		fields_in_sections = SectionHasField.objects.filter( section = current_id_section).order_by("id")[ self.slice_start :  self.slice_end ]
 
-				_fields.append({
 
-					"data" : _field.data["field"].data["data"] ,
-					"id" : _field.data["field"].data["id"]
+		if fields_in_sections.count() < self.limit_data:
+			self.next_paginator = False 
+		else:
+			self.next_paginator = True
+
+
+		for key ,_field   in enumerate(fields_in_sections):
+
+
+			_fields.append({
+
+					"data" : _field.field.data,
+					"id" : _field.field.id
+
 				})
-
 
 		return _fields
 
 	    
 	def alter_list_data_to_serialize(self, request, data):
 
+		#[ slice_start : slice_end ]
+		#[ 0 	  : 20 ]
 
-		id_application = int(request.GET.get("application"))
-		application  = Apps.objects.filter( owner = request.user , id = id_application )[0]
+		self.limit_data  	= int(request.GET.get("limit_data", 20 ))
+		self.slice_start 	= int(request.GET.get("slice_start" ,  0 ))
+		self.slice_end 		= int(request.GET.get("slice_end" ,  self.limit_data   ))
+
 
 
 		all_data =   data["objects"]
 
 		_data_json_field_and_section = []
-		_all_sections= []
 
-		for data_field in all_data:
+		for key , _app in enumerate(all_data):
 
 
-			if data_field.data["section"].data["id"] not in _all_sections:
-
-				#save not duplicated fields
-				_current_section_id =  data_field.data["section"].data["id"]
-				_all_sections.append( _current_section_id )
-
-				_data_json_field_and_section.append({ 
+			_data_json_field_and_section.append({ 
 					
-					 "name" :  data_field.data["section"].data["name"],
-					 "section" : { 
-
-					  		"name" :  data_field.data["section"].data["name"],
-							"id" :  data_field.data["section"].data["id"],
-					 },
-
-					 "section_fields" : self._get_all_fiels_from_section( all_data , _current_section_id ) 
-					
-				})
-
-
+				 "name" :  _app.data["section"].data["name"],
+				 "section" : { 
+						"name" :  _app.data["section"].data["name"],
+						"id" :  _app.data["section"].data["id"],
+				 },
+				 "section_fields" : self._get_all_fiels_from_section(  _app.data["section"].data["id"] ) 
 				
+			})
 
 		#Metemos los datos de la app a META
+
+		print data["objects"][0].data["app"].data["name"]
+
+		app_name = data["objects"][0].data["app"].data["name"]
+		app_id = data["objects"][0].data["app"].data["id"]
+
 		META = data["meta"]
-		META["app"] = { "app" : application.name , "id" : application.id  }
+
+		#vacia meta
+		del data["meta"] 
+
+		META = {
+				"limit" : self.limit_data,
+				"slice_start" : self.slice_start ,
+				"slice_end" : self.slice_end,
+		 	}
+
+
+		#encode uri
+		if self.next_paginator  :
+			META_NEXT = META
+			META_NEXT.update({'limit': self.limit_data, 'slice_start': self.slice_end ,  'slice_end' : self.slice_end + self.limit_data , 'app' : app_id  })
+			META["next"] =  urllib.urlencode( META_NEXT)  
+		else:
+			META["next"] = None
+
+
+		#add app settings
+		META["app"] = { "app" : app_name , "id" : app_id }
+
+		#save all in meta
 		data["meta"] = META
 
 		#se agreagn los campos agrupados por seccion
@@ -658,34 +698,14 @@ class AppHasSectionResource(ModelResource):
 		data["objects"] = _data_json_field_and_section 
 
 		return data
-
-
-
-	def dehydrate(self , bundle):
-
-		return bundle
-	
 	
 	def get_object_list(self, request):
 
-		id_app  =  int(request.GET.get("application"))
-
-		all_sections_in_application = AppHasSection.objects.filter( app = id_app , app__owner = request.user ).values("section__id")
-
+		id_app  =  int(request.GET.get("app"))
+		sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app ) 
 
 
-		sections_length = all_sections_in_application.count()
-
-		id_sections = []
-		for section in all_sections_in_application:
-			id_sections.append( section.get("section__id") )
-		
-
-
-		allowed_sections_has_fields  = super(AppHasSectionResource , self).get_object_list(request).filter( section__in = id_sections ) 
-
-
-		return allowed_sections_has_fields 
+		return sections
 
 
 
@@ -735,15 +755,27 @@ class AddSectionToApplicationResource(ModelResource):
 		#se crea la seccion con el nombre 
 		_current_section = Section.objects.create( name = _current_section_name )
 
+
+
 		#una aplicacion tiene una nueva seccion
 		app_instance = Apps.objects.get( pk = _current_app_id , owner = bundle.request.user  )
 
+		#recalculamos el tamaño maximo de columnas existente, siempre con la primer columna
+		section_in_application = AppHasSection.objects.filter( app = app_instance )[0].section
+		fields_in_section =  SectionHasField.objects.filter( section = section_in_application)
+
+		#maximo numero de filas que se agregaran
+		_max_fields_to_add = fields_in_section.count()
+
+
+		#asignamos la seccion a la aplicacion
 		AppHasSection.objects.create( app = app_instance , section = _current_section )
 
 
 		for i in range(_max_fields_to_add):
 
 			_current_field = Field.objects.create( data = "")
+			print i, _current_field
 		        #se guarda la seccion y el campo en una relaci on
 			#solo la primera vez que se guarde el dato por obj.save
 			#esto es porque obj.save solo guarda una vez, y necesitamos guardar muchas veces en SectionHasField

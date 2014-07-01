@@ -94,13 +94,12 @@ define( function(require){
 						     
 					 if( this.attributes.url ){
 
-						return this.attributes.url;
+						return '/api/v1/appsection/?'+this.attributes.url;
 
 					}
 
-
 						    var current_id_application = this.attributes.id_application;
-						     return '/api/v1/appsection/?application='+current_id_application;
+						    return '/api/v1/appsection/?app='+current_id_application;
 					     },
 					 });
 

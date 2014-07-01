@@ -4,7 +4,7 @@ import dj_database_url
 
 
 
-dev = False
+dev = True
 
 
 APP_VERSION = '0.0.1'
@@ -30,6 +30,16 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'dfni72g4f6n3d8',
+		'HOST': 'ec2-107-20-224-35.compute-1.amazonaws.com',
+		'PORT': 5432,
+		'USER': 'gkvezrfnjnhtdv',
+		'PASSWORD': 'nocvUo9uONNrT3LA3g8N7L7iUW'
+	}
+}
 
 if dev:
 	DATABASES = {
@@ -43,16 +53,6 @@ if dev:
     }
 }
 
-DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.postgresql_psycopg2',
-		'NAME': 'dfni72g4f6n3d8',
-		'HOST': 'ec2-107-20-224-35.compute-1.amazonaws.com',
-		'PORT': 5432,
-		'USER': 'gkvezrfnjnhtdv',
-		'PASSWORD': 'nocvUo9uONNrT3LA3g8N7L7iUW'
-	}
-}
 
 
 # Local time zone for this installation. Choices can be found here:
