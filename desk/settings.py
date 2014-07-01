@@ -12,7 +12,8 @@ APP_VERSION = '0.0.1'
 DEBUG  = os.environ.get("DEBUG_DJANGO",False) 
 TASTYPIE_FULL_DEBUG = False
 
-PATH_STYLE_CSS = "css/skeleton.min.css?v={0}".format(APP_VERSION)
+#PATH_STYLE_CSS = "css/skeleton.min.css?v={0}".format(APP_VERSION)
+PATH_STYLE_CSS = "css/skeleton.css?v={0}".format(APP_VERSION)
 PATH_STYLE_JS  = "js/dist/main"
 
 if DEBUG: 
