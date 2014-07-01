@@ -103,6 +103,7 @@ define( function(require){
 					     },
 					 });
 
+
 		/*******************************************************************************************************/
 		/*******************************************************************************************************/
 		/*******************************************************************************************************/
@@ -167,6 +168,12 @@ define( function(require){
 
 		//se agregan fields al final de la aplicacion
 		add_fields_at_end : function(e){
+
+			//checamos si hay paginacion, entonces no se crea un elemento, se hace paginacion
+			var paginator_button = $(".paginator");
+			pagination_is_availble = ( paginator_button.length >= 1  ) ? true: false; 
+			console.log( pagination_is_availble )
+			if(!pagination_is_availble){
 
 				 //se quita el evento para agregar filas 
 				$(e.currentTarget).unbind("click");
@@ -235,6 +242,10 @@ define( function(require){
 
 
 				$(e.currentTarget).addClass("allow").click() 
+			}else{
+					$(".paginator").click();	
+
+			}
 
 		},
 		 // iniciamos que puedan editar los campos al dar click
@@ -390,6 +401,7 @@ define( function(require){
 				    console.log(data)
 				    var self = this;
 
+				$(".paginator").remove();
 				    if ( data.meta.next ){
 
 					    var button_paginator  = ' <div class="btn gray paginator" data-next="'+data.meta.next+'"> Click para ver mas </span> ';

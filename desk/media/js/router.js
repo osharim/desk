@@ -33,7 +33,18 @@ return (function(){
 			slideLeftMainWindow : function(){
 
 				 $(".section_").animate({left : 190  });
+			},
+
+			showLoader : function(){
+
+				$("#loader").animate({ top : 0 },"fast");
+//
+			},
+			hideLoader: function(){
+
+				$("#loader").animate({ top : -46 },"fast");
 			}
+
 
 
 		},
@@ -60,6 +71,22 @@ return (function(){
 		window.App.Router = Backbone.Router.extend({
 
 			initialize : function(){
+
+
+
+
+
+					     $( document ).ajaxComplete(function() {
+						      
+						        window.App.Sections.hideLoader();  
+							  
+					     });
+
+
+					     $( document ).ajaxStart(function() {
+						          window.App.Sections.showLoader();  
+							    
+					     });
 
 
 				//init workspaces

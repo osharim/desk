@@ -10,12 +10,13 @@
 
 
 				<% var max_length_fields = app.section_fields.length %>
+				<% var max_to_add_new_field = app.section_fields.length - 4;   %>
 
 				<% _.each(app.section_fields , function(fields, key_field ) { %>
 
 						<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
 
-						<% if( max_length_fields == key_field+1){ %>
+						<% if( key_field+1 >= max_to_add_new_field ){ %>
 
 							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='last_allow'>" + fields.data + _td_end  %>
 

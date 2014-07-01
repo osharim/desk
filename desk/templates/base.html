@@ -30,6 +30,11 @@
 
 
 
+		<div id="loader"> 
+	       
+			<i class="glyphicon glyphicon-fire"></i>
+			Cargando..
+		</div>
 
 		<div id="main_container">
 
@@ -49,14 +54,6 @@
 
 
 
-
-
-		<div class="main_loader bg- ">
-
-			<div class="logo"></div>
-			<div class="loader" id="loader"></div>
-
-		</div>
 
 
 <!-- <script data-main="{{ MEDIA_URL}}{{ PATH_STYLE_JS }}{% if not PATH_STYLE_CSS %}js/dist/main{% endif %}" src="{{ MEDIA_URL }}js/libs/require.js"></script> --> 
@@ -96,7 +93,7 @@ require.config({
 
 
         paths :{
-		       //"spin" : "spin.min",// graficas con d2
+		       "spin" : "spin.min",// loader 
 		       "circles" : "circles.min",//circulos en svg
 		       "modernizr" : "modernizr",//cross browsers
 		       'modal' : 'bentel.modalbox', // modalboax
