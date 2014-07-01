@@ -1,0 +1,51 @@
+
+		<%  var _tr_start = '<tr>' %>
+		<%  var _tr_end = '</tr>' %>
+		<%  var _td_start = '<td>' %>
+		<%  var _td_end = '</td>' %>
+
+		<%  _tr  = []   %>
+
+		<% _.each(data.objects , function(app , key_section ) { %>
+
+
+				<% var max_length_fields = app.section_fields.length %>
+
+				<% _.each(app.section_fields , function(fields, key_field ) { %>
+
+						<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
+
+						<% if( max_length_fields == key_field+1){ %>
+
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='last_allow'>" + fields.data + _td_end  %>
+
+						<% }else{ %>
+
+							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='allow'>" + fields.data + _td_end  %>
+
+						<% } %>
+				<% }); %>
+
+		<% }); %>
+
+		<% if( counter_id_start_with_integer <= 1 ){ 
+		
+			var int_key = 1
+
+			}else{
+
+			var int_key = counter_id_start_with_integer;
+
+			}
+	
+		%>
+
+
+		<% _.each( _tr , function(data_in_tr  ) { %>
+
+
+				<%= _tr_start + _td_start + int_key   + _td_end + data_in_tr +  _td_start +  _td_end + _tr_end      %>
+				<% int_key+=1; %>
+		<% }) %>
+
+

@@ -23,8 +23,10 @@
 
 
 .app tbody td:first-child {
-	 background: none repeat scroll 0 0 #fafbfc;
-	     color: #bbb;
+	background: none repeat scroll 0 0 white;
+	    border-bottom: 1px solid white;
+	        border-left: 1px solid white;
+		    color: #bbb;
 }
 
 .app thead {
@@ -33,7 +35,6 @@
 	}
 
 table.app {
-	  margin-bottom: 200px;
 	      text-align: center;
 	          width: 100%;
     }
@@ -112,11 +113,23 @@ textarea{
 					     width: 99%;
 }
 
-.app tbody td:first-child:hover , .app tbody td:last-child:hover {
-	    border: 1px solid #ccc;
+.app tbody td:first-child:hover { 
+	    border-left:1px solid white;
+	    border-bottom:1px solid white;
+	    border-right:1px solid #ddd;
 	        box-shadow: 0 0;
 		    color: #999;
 	    }
+
+
+.app tbody td:last-child:hover {
+	    border: 1px solid #ddd;
+	        box-shadow: 0 0;
+		    color: #999;
+	    }
+
+
+
 
 .app .btn-group{
 	    position: relative;
@@ -175,6 +188,15 @@ textarea{
 }
 
 .app thead th:first-child {
-	    color: #bbb;
+	  background: none repeat scroll 0 0 white;
+	      border-bottom: 1px solid white;
+	          border-left: 1px solid white;
+		      border-top: 1px solid white;
+		          color: #bbb;
     }
 
+
+.btn.gray.paginator {
+	    margin-top: 8px;
+	        text-align: center;
+	}

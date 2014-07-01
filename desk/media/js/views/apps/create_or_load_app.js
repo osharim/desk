@@ -92,25 +92,31 @@ define( function(require){
 		App.Model.data_application = Backbone.Model.extend({    
 					     url : function(){
 						     
+					 if( this.attributes.url ){
+
+						return this.attributes.url;
+
+					}
+
+
 						    var current_id_application = this.attributes.id_application;
 						     return '/api/v1/appsection/?application='+current_id_application;
 					     },
 					 });
 
-
 		/*******************************************************************************************************/
 		/*******************************************************************************************************/
 		/*******************************************************************************************************/
 		/*******************************************************************************************************/
-
-
-
-
 
 		 // toma todos los datos de una app con secciones y campos y renderiza el template y los inyecta en el DOM
 		 App.View.load_data_from_app_with_sections_and_fields  = Backbone.View.extend({   
 
+		//estructura general ( secciones y estructura de table
 		 template_field_section  : require("text!../templates/apps/form_create_app/sections_and_fields.html"),
+
+		//datos que van dentro de table
+		 template_field_to_fill   : require("text!../templates/apps/form_create_app/fields.html"),
 
 		 initialize : function(){
 
@@ -349,7 +355,14 @@ define( function(require){
 			 	    //nombre de la aplicacion actual
 				     $(".current_app").html(application_data.meta.app.name);
 
-				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data } );    
+				     var start_id_counter = 1;
+				     //rendereamos los datos de la app just fields
+				    var template_field_fill   = _.template(this.template_field_to_fill  , 
+						    { data  : application_data , counter_id_start_with_integer : start_id_counter } );    
+
+				     //render completo de la app
+				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data , data_tr_template : template_field_fill  } );    
+
 				     $(".section_").hide();
 				     $(".section_[data-nav=app_desk]").show();
 				     $(".container_app").html(this.$el.html(template_field_and_sections_rendered));
@@ -358,8 +371,83 @@ define( function(require){
 				     //activamos que pueda editar cabecera
 				     this.edit_section_name();
 
+				     console.log(application_data)
+				     this.paginator(application_data);
 
-		 }
+
+				     console.log( application_data.meta.app.id )
+
+				      var current_app_id = application_data.meta.app.id;
+				      $(".app-str li").removeClass("active");
+				      console.log( $(".app-str li") )
+				      $(".app-str li[data-id="+current_app_id+"]").addClass("active")
+
+
+
+
+		 },
+		paginator : function(data){
+
+				    console.log(data)
+				    var self = this;
+
+				    if ( data.meta.next ){
+
+					    var button_paginator  = ' <div class="btn gray paginator" data-next="'+data.meta.next+'"> Click para ver mas </span> ';
+					    $(".container_app").append( button_paginator )
+
+
+					    $(".paginator").click(function(){
+
+						    var $_el = $(this),
+					    		next = $_el.attr("data-next");
+
+
+						    	var id_application = this.id_application;
+									
+							var data_in_section = new App.Model.data_application( { id_application : 0 , url : next  } );
+
+							data_in_section.fetch({
+							
+									success : function(model,data){
+
+										    var continue_with_previous_counter_id = $(".container_data tr:last-child td:first-child").html();
+										  //numero ultimo de la columna de id para seguir la secuencia . si obtenemos 20, le sumamos 1 para seguir con 21
+										     continue_with_previous_counter_id = parseInt(continue_with_previous_counter_id)+1;
+
+										      //rendereamos los datos de la app just fields
+										 	var template_field_fill   = _.template(self.template_field_to_fill , { 
+											 		data  : data , counter_id_start_with_integer : continue_with_previous_counter_id  
+										 	} );    
+
+
+
+
+											$(".last_allow").removeClass("last_allow").addClass("allow");
+
+											//reload edit fields
+											$(".allow").editable("destroy");
+
+
+										        $(".container_data").append(template_field_fill);
+
+										     	//reload edit fields
+										     	self.edit_value_in_field();
+
+
+
+										     self.paginator(data)
+										    
+							}//success
+							
+							});//fetch
+					    })
+				    }else{
+
+					    	$(".paginator").remove();
+
+				    }
+		}
 		 
 		});
 
@@ -497,7 +585,11 @@ define( function(require){
 					     			$(".section_[data-nav=creating_app]").hide()
 								//ocultamos mensaje de no has creado ninguna aplicacion
 					     			$(".section_[data-nav=apps]").hide()
+
 								aplicacion.idAttribute  = aplicacion.id;   
+
+					     			console.log(aplicacion.id , "after created" )
+
 								AppBox.Collections.current_collection.add(aplicacion);  
 
 							      //carga los datos (field and sections)  de una app
@@ -524,7 +616,6 @@ define( function(require){
 
 								     //pone el template de columnas dinamicas
 								     var data_in_application = new App.View.load_data_from_app_with_sections_and_fields({ application_data : data });
-
 					}//success
 					
 					});//fetch

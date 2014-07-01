@@ -1,13 +1,7 @@
 <table class="app">
 
-
-		
-		
-
-			 
 	<thead>
 		<tr>
-
 			<th class="">  id   </th> 
 
 		<% _.each(data.objects , function(app) { %>
@@ -30,69 +24,24 @@
 						</ul>
 					</div>
 
-	
-		
 			</span>    
 			-->
-
-
-
 
 			</th>
 
 		<% }); %>
 
-
 			<th class="btn gray add_column">+ </th>
-
 		</tr>
 	</thead>
 
 	<tbody class="container_data">
 
-		<%  var _tr_start = '<tr>' %>
-		<%  var _tr_end = '</tr>' %>
-		<%  var _td_start = '<td>' %>
-		<%  var _td_end = '</td>' %>
-
-		<%  _tr  = []   %>
-
-		<% _.each(data.objects , function(app , key_section ) { %>
-
-
-				<% var max_length_fields = app.section_fields.length %>
-
-				<% _.each(app.section_fields , function(fields, key_field ) { %>
-
-						<%  _tr[key_field] = ( _tr[key_field] == undefined ) ? "" :  _tr[key_field] ; %>
-
-						<% if( max_length_fields == key_field+1){ %>
-
-							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='last_allow'>" + fields.data + _td_end  %>
-
-						<% }else{ %>
-
-							<% _tr[key_field] =  _tr[key_field] +  "<td  data-id='"+fields.id+"' class='allow'>" + fields.data + _td_end  %>
-
-						<% } %>
-
-				<% }); %>
-
-				
-		<% }); %>
-
-
-		<% var int_key = 0 %>
-		<% _.each( _tr , function(data_in_tr , key ) { %>
-
-				<% int_key = parseInt(key) + 1  %>
-				<%= _tr_start + _td_start + int_key   + _td_end + data_in_tr +  _td_start +  _td_end + _tr_end      %>
-
-		<% }) %>
-
-
-
-
+	 	<%= data_tr_template %>	
 
 	</tbody>
 </table>
+
+
+
+

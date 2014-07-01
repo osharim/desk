@@ -101,7 +101,7 @@ html,body,#main_container{
 		     display: inline-block;
 		         float: left;
 			     min-height: 700px;
-			         padding: 1%;
+			         padding: 1% 1% 200px; 
 				     width: 98%;
 }
 
@@ -325,3 +325,4 @@ html,body,#main_container{
 		       color: rgba(0,0,0,.4);
 		     
 	     }
+

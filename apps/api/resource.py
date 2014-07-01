@@ -58,14 +58,24 @@ class PageNumberPaginator(object):
 	#get max sections available in app
 	max_sections_in_application = current_app_has_section.count()
 
+
 	#get max rows in sections available in section
 	_fields = SectionHasField.objects.filter( section = current_app_has_section[0].section )
-	max_fields_in_section = _fields.count()
-	print max_fields_in_section, max_sections_in_application
 
+	max_fields_in_section = _fields.count()
+
+	max_rows_in_application = 20
+
+	#si la suma de todas las columnas y campos nos general mas de 20 rows entonces lo ajustamos para paginacion
+	new_limit_by_20 = max_sections_in_application * max_rows_in_application 
+
+	#sino entonces mostramos todos los datos
 	new_limit = max_fields_in_section * max_sections_in_application
+
 	#sobreescribirmos el limite
-	limit = new_limit
+	limit = new_limit if new_limit <= max_rows_in_application else new_limit_by_20 
+
+	limit = new_limit_by_20
 
         self.request_data = request_data
         self.objects = objects
@@ -396,13 +406,19 @@ class AppsResource(ModelResource):
 
 		_current_app = bundle.obj
 
+
 		_current_section = Section.objects.create( name = u"Nueva seccion")
 		for i in range(5):
 
-			_current_field_in_section = Field.objects.create( data = "Empieza a escribir aqui")
+			_current_field_in_section = Field.objects.create( data = "")
 
 			#se guarda la seccion y el campo en una relaci on
 			SectionHasField.objects.create ( field = _current_field_in_section , section =  _current_section )
+
+
+		print _current_section.__dict__,"id"
+		print "total"
+
 
 		AppHasSection.objects.create( app = _current_app  , section = _current_section )
 
@@ -531,6 +547,7 @@ class SectionHasFieldResource(ModelResource):
 				obj_field_section = SectionHasField.objects.create ( field = _current_field  , section =  instance_section  )
 				fields_created.append( obj_field_section )
 
+		bundle.data["field_instalce"] = []
 		bundle.data["field_instalce"] = fields_created
 
 		return bundle
@@ -577,9 +594,10 @@ class AppHasSectionResource(ModelResource):
 
 	def _get_all_fiels_from_section(self , all_data , current_id ):
 
+
 		_fields = []
 
-		for _field in all_data:
+		for key ,_field   in enumerate(all_data):
 
 			if _field.data["section"].data["id"] == current_id:
 
@@ -607,7 +625,6 @@ class AppHasSectionResource(ModelResource):
 
 		for data_field in all_data:
 
-			print data_field.data["section"].data["id"] 
 
 			if data_field.data["section"].data["id"] not in _all_sections:
 
@@ -653,11 +670,20 @@ class AppHasSectionResource(ModelResource):
 
 		id_app  =  int(request.GET.get("application"))
 
-		all_sections_in_application = AppHasSection.objects.filter( app = id_app , app__owner = request.user )
+		all_sections_in_application = AppHasSection.objects.filter( app = id_app , app__owner = request.user ).values("section__id")
+
+
 
 		sections_length = all_sections_in_application.count()
 
-		allowed_sections_has_fields  = super(AppHasSectionResource , self).get_object_list(request).filter( section__in = all_sections_in_application ) 
+		id_sections = []
+		for section in all_sections_in_application:
+			id_sections.append( section.get("section__id") )
+		
+
+
+		allowed_sections_has_fields  = super(AppHasSectionResource , self).get_object_list(request).filter( section__in = id_sections ) 
+
 
 		return allowed_sections_has_fields 
 
@@ -679,7 +705,7 @@ class AddSectionToApplicationResource(ModelResource):
 
 	def dehydrate(self , bundle):
 
-		fields_ = SectionHasField.objects.filter( section = bundle.obj.section )
+		fields_ = SectionHasField.objects.filter( section = bundle.obj.section ).order_by("id")
 		bundle.data["id_section"] = bundle.obj.section.id
 
 		fields_str = []
