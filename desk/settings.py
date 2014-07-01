@@ -4,7 +4,6 @@ import dj_database_url
 
 
 
-DATABASES['default'] =  dj_database_url.config()
 dev = False
 
 
@@ -42,6 +41,18 @@ if dev:
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
+
+DATABASES = {
+	'default': {
+		'ENGINE': 'django.db.backends.postgresql_psycopg2',
+		'NAME': 'dfni72g4f6n3d8',
+		'HOST': 'ec2-107-20-224-35.compute-1.amazonaws.com',
+		'PORT': 5432,
+		'USER': 'gkvezrfnjnhtdv',
+		'PASSWORD': 'nocvUo9uONNrT3LA3g8N7L7iUW'
+	}
+}
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
