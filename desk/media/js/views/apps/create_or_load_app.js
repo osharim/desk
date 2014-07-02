@@ -174,7 +174,6 @@ define( function(require){
 			//checamos si hay paginacion, entonces no se crea un elemento, se hace paginacion
 			var paginator_button = $(".paginator");
 			pagination_is_availble = ( paginator_button.length >= 1  ) ? true: false; 
-			console.log( pagination_is_availble )
 			if(!pagination_is_availble){
 
 				 //se quita el evento para agregar filas 
@@ -254,33 +253,28 @@ define( function(require){
 
 			var current_el = $(event.currentTarget).parent()
 
-				console.log(event.keyCode)
 
 
 			switch(event.keyCode ){ 
 
 			case 9: //for tab key
 				
-			            console.log("hooo")
 
 				    this.from_current_td_select_next_right_td( current_el);
 				    return false; // <== here
 
 
 			case 13://enter
-				    console.log("enter")
 				    this.from_current_td_select_next_down_td( current_el);
 				    return false;
 
 
 			case 37://left
-				    console.log("enter")
 				    this.from_current_td_select_next_left_td( current_el);
 				    return false;
 
 
 			case 39://right
-				    console.log("enter")
 				    this.from_current_td_select_next_right_td( current_el);
 				    return false;
 
@@ -311,7 +305,6 @@ define( function(require){
 					var $el = $(el);
 					next_td  = $el.prev()[0]
 
-					console.log( $el , next_td )
 					$(next_td).click().addClass("focused")
 
 				    return false; // <== here
@@ -325,7 +318,6 @@ define( function(require){
 					var $el = $(el);
 					next_td  = $el.next()[0]
 
-					console.log( $el , next_td )
 					$(next_td).click().addClass("focused")
 
 				    return false; // <== here
@@ -388,7 +380,6 @@ define( function(require){
 									data : JSON.stringify( new_data ),
 									success : function(_data){
 
-										console.log(data)
 
 										// al dar enter se va a al campo de abajo
 										//self.from_current_td_select_next_down_td(data.$el)
@@ -413,7 +404,6 @@ define( function(require){
 					var self = this;
 
 
-					    console.log(this)
 
 					var $node_container_data =  $(".container_data"),
 					id_current_app = this.options.application_data.meta.app.id,
@@ -500,15 +490,12 @@ define( function(require){
 				     //activamos que pueda editar cabecera
 				     this.edit_section_name();
 
-				     console.log(application_data)
 				     this.paginator(application_data);
 
 
-				     console.log( application_data.meta.app.id )
 
 				      var current_app_id = application_data.meta.app.id;
 				      $(".app-str li").removeClass("active");
-				      console.log( $(".app-str li") )
 				      $(".app-str li[data-id="+current_app_id+"]").addClass("active")
 
 
@@ -517,7 +504,6 @@ define( function(require){
 		 },
 		paginator : function(data){
 
-				    console.log(data)
 				    var self = this;
 
 				$(".paginator").remove();
@@ -718,7 +704,6 @@ define( function(require){
 
 								aplicacion.idAttribute  = aplicacion.id;   
 
-					     			console.log(aplicacion.id , "after created" )
 
 								AppBox.Collections.current_collection.add(aplicacion);  
 
