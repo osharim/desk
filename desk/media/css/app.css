@@ -94,7 +94,7 @@ table.app {
 /*	     border: 0 none; */
      }
 
-.app tbody td:hover {
+.app tbody td:hover, .focused {
 	    border: 1px solid #4b89b2;
 	        box-shadow: 0 1px 5px #4b89b2;
 		    cursor: pointer;

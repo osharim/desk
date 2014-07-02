@@ -128,6 +128,8 @@ define( function(require){
 		 	"click .add_column" : "add_section", 	 
 		 	//al dar click al final de las filas se agrega nueva fila
 		 	"click .last_allow" : "add_fields_at_end", 	 
+			//checar que tecla se oprimio para naavegar
+		 	"keydown textarea" : "check_key_pressed", 	 
 		 },
 
 		//al dar click en el nombre de seccion se puede editar el nombre
@@ -248,9 +250,119 @@ define( function(require){
 			}
 
 		},
+		check_key_pressed : function(event){
+
+			var current_el = $(event.currentTarget).parent()
+
+				console.log(event.keyCode)
+
+
+			switch(event.keyCode ){ 
+
+			case 9: //for tab key
+				
+			            console.log("hooo")
+
+				    this.from_current_td_select_next_right_td( current_el);
+				    return false; // <== here
+
+
+			case 13://enter
+				    console.log("enter")
+				    this.from_current_td_select_next_down_td( current_el);
+				    return false;
+
+
+			case 37://left
+				    console.log("enter")
+				    this.from_current_td_select_next_left_td( current_el);
+				    return false;
+
+
+			case 39://right
+				    console.log("enter")
+				    this.from_current_td_select_next_right_td( current_el);
+				    return false;
+
+
+			case 38://up
+
+				    this.from_current_td_select_next_up_td( current_el);
+				    return false;
+
+
+			case 40://down
+
+				    this.from_current_td_select_next_down_td( current_el);
+				    return false;
+
+
+
+
+			  }
+
+
+
+
+			},
+		from_current_td_select_next_left_td : function(el){
+
+					$(".focused").removeClass("focused");
+					var $el = $(el);
+					next_td  = $el.prev()[0]
+
+					console.log( $el , next_td )
+					$(next_td).click().addClass("focused")
+
+				    return false; // <== here
+
+			},
+
+
+		from_current_td_select_next_right_td : function(el){
+
+					$(".focused").removeClass("focused");
+					var $el = $(el);
+					next_td  = $el.next()[0]
+
+					console.log( $el , next_td )
+					$(next_td).click().addClass("focused")
+
+				    return false; // <== here
+
+			},
+
+		from_current_td_select_next_up_td : function(el){
+
+			$(".focused").removeClass("focused");
+
+			var $el = $(el);
+			var current_index = $el.index();
+			next_td  = $el.parent().prev().children("td:eq("+current_index+")")[0]; 
+
+			$(next_td).click().addClass("focused")
+
+		},
+
+
+
+		// selecciona el campo de abajo respecto al parametro ingresado
+		from_current_td_select_next_down_td : function(el){
+
+			$(".focused").removeClass("focused");
+
+			var $el = $(el);
+			var current_index = $el.index();
+			next_td  = $el.parent().next().children("td:eq("+current_index+")")[0]; 
+
+			$(next_td).click().addClass("focused")
+
+		},
+
 		 // iniciamos que puedan editar los campos al dar click
 		  edit_value_in_field : function(){
 
+			var self = this;
 
 
 
@@ -274,7 +386,14 @@ define( function(require){
 									url : "/api/v1/field/"+_current_id+"/",
 									type : "PUT",
 									data : JSON.stringify( new_data ),
-									success : function(data){
+									success : function(_data){
+
+										console.log(data)
+
+										// al dar enter se va a al campo de abajo
+										//self.from_current_td_select_next_down_td(data.$el)
+
+
 									},
 
 									dataType : "json",

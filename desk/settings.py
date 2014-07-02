@@ -4,7 +4,7 @@ import dj_database_url
 
 
 
-dev = False 
+dev = True
 
 
 APP_VERSION = '0.0.1'
