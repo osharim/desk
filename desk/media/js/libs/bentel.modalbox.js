@@ -12,7 +12,12 @@
 
 /* Widget "modal" object constructor */
 
-(function ( $ ) {
+define( function(require){ 
+
+	 var $           = require('jquery');
+
+
+return (function ( $ ) {
 
 	$.Modal = function(options){
 
@@ -158,5 +163,8 @@
 }
 
 )($);
+
+
+})//define
 
 

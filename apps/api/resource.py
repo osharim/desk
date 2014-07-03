@@ -59,7 +59,6 @@ class PageNumberPaginator(object):
 	#get max sections available in app
 	max_sections_in_application = current_app_has_section.count()
 
-	print max_sections_in_application , current_app_has_section
 
 
 	#get max rows in sections available in section
@@ -75,7 +74,6 @@ class PageNumberPaginator(object):
 
 	new_limit = max_fields_in_section * max_sections_in_application
 
-	print  max_sections_in_application ,  max_rows_in_application , max_rows_in_application
 	#sobreescribirmos el limite
 	limit = new_limit if new_limit <= max_rows_in_application else new_limit_by_20 
 
@@ -420,8 +418,6 @@ class AppsResource(ModelResource):
 			SectionHasField.objects.create ( field = _current_field_in_section , section =  _current_section )
 
 
-		print _current_section.__dict__,"id"
-		print "total"
 
 
 		AppHasSection.objects.create( app = _current_app  , section = _current_section )
@@ -606,7 +602,6 @@ class AppHasSectionResource(ModelResource):
 
 		_fields = []
 
-		print self.slice_end , self.slice_start , self.limit_data ,"in get"
 
 		fields_in_sections = SectionHasField.objects.filter( section = current_id_section).order_by("id")[ self.slice_start :  self.slice_end ]
 
@@ -661,7 +656,6 @@ class AppHasSectionResource(ModelResource):
 
 		#Metemos los datos de la app a META
 
-		print data["objects"][0].data["app"].data["name"]
 
 		app_name = data["objects"][0].data["app"].data["name"]
 		app_id = data["objects"][0].data["app"].data["id"]
@@ -775,7 +769,6 @@ class AddSectionToApplicationResource(ModelResource):
 		for i in range(_max_fields_to_add):
 
 			_current_field = Field.objects.create( data = "")
-			print i, _current_field
 		        #se guarda la seccion y el campo en una relaci on
 			#solo la primera vez que se guarde el dato por obj.save
 			#esto es porque obj.save solo guarda una vez, y necesitamos guardar muchas veces en SectionHasField
