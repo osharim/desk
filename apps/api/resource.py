@@ -640,6 +640,7 @@ class AppHasSectionResource(ModelResource):
 
 		_data_json_field_and_section = []
 
+
 		for key , _app in enumerate(all_data):
 
 
@@ -696,7 +697,7 @@ class AppHasSectionResource(ModelResource):
 	def get_object_list(self, request):
 
 		id_app  =  int(request.GET.get("app"))
-		sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app ) 
+		sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app ).order_by("id")
 
 
 		return sections

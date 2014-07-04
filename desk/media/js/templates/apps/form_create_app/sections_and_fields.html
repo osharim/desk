@@ -6,7 +6,7 @@
 
 		<% _.each(data.objects , function(app) { %>
 
-		<th class="edit_section" data-id="<%= app.section.id %>" data-type="section">
+		<th contenteditable="true" class="edit_section no-event-attach" data-id="<%= app.section.id %>" data-type="section">
 			<span class="name"><%= app.section.name  %>   </span>
 
 

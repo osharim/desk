@@ -15,7 +15,7 @@ define( function(require){
 	  _           = require('underscore'), 
 	  Backbone    = require('backbone'),
 	  button_save_app = require('button_save_app');
-	  require('editable');
+	  //require('editable');
 	  require('modal');
 
 
@@ -129,39 +129,76 @@ define( function(require){
 		 	//al dar click al final de las filas se agrega nueva fila
 		 	"click .last_allow" : "add_fields_at_end", 	 
 			//checar que tecla se oprimio para naavegar
-		 	"keydown textarea" : "check_key_pressed", 	 
+		 	//"keydown textarea" : "check_key_pressed", 	 
 		 },
 
+		// forzar un trigger change a todos los tds
+		force_trigger_change_on_td_with_contenteditable : function(){
+
+
+				var td_with_no_event_attached = $(".no-event-attach"),
+				    self = this;
+
+
+				var all_td_in_application_that_allow_edit_field = $( td_with_no_event_attached ).on('focus', function() {
+					    var $this = $(this);
+						$this.data('before', $this.html());
+						    return $this;
+				}).on('blur keyup paste', function() {
+					    var $this = $(this);
+						if ($this.data('before') !== $this.html()) {
+								$this.data('before', $this.html());
+									$this.trigger('change');
+									    }
+						    return $this;
+				});
+
+
+
+				 $(td_with_no_event_attached).change(function(e) {
+
+
+					 if( $(e.currentTarget).attr("data-type") == "section"){
+
+					 	self.edit_section_name(e);
+
+					 }else{
+					 	self.edit_value_in_field(e);
+					 }
+
+					}).keypress(function(e) {
+
+					 	self.check_key_pressed(e);
+
+				});
+
+				 all_td_in_application_that_allow_edit_field.removeClass("no-event-attach");
+
+
+
+		},
+
 		//al dar click en el nombre de seccion se puede editar el nombre
-		edit_section_name : function(){
+		edit_section_name : function(e){
 
-			var th_ = $(".edit_section .name");
-				 th_.editable({
-					      touch : true, // Whether or not to support touch (default true)
-					      lineBreaks : true, // Whether or not to convert \n to <br /> (default true)
-					      closeOnEnter : true, // Whether or not pressing the enter key should close the editor (default false)
-					      event : 'click',
+			var $el = $(e.currentTarget);
+			var content = $el.find(".name").html()
 
-						callback : function( data ) {
-							// Callback that will be called once the editor is blurred
-							if( data.content ) {
+			if( content.length > 0 ) {
 
-								var new_data = { name : data.content };
-								var _current_id = data.$el.parent().attr("data-id") 
+				var new_data = { name : content };
+				var _current_id = $el.attr("data-id") 
 
-								$.ajax({
-									url : "/api/v1/section/"+_current_id+"/",
-									type : "PUT",
-									data : JSON.stringify( new_data ),
-									success : function(data){ },
-									dataType : "json",
-									contentType: "application/json",
+					$.ajax({
+						url : "/api/v1/section/"+_current_id+"/",
+						type : "PUT",
+						data : JSON.stringify( new_data ),
+						success : function(data){ },
+						dataType : "json",
+						contentType: "application/json",
 
-								});
-							    }
-							}
-
-						});
+					});
+			}
 
 
 
@@ -171,6 +208,7 @@ define( function(require){
 		//se agregan fields al final de la aplicacion
 		add_fields_at_end : function(e){
 
+			var self = this;
 			//checamos si hay paginacion, entonces no se crea un elemento, se hace paginacion
 			var paginator_button = $(".paginator");
 			pagination_is_availble = ( paginator_button.length >= 1  ) ? true: false; 
@@ -181,8 +219,8 @@ define( function(require){
 				$(".last_allow").removeClass("last_allow").addClass("allow");
 
 				//reload edit fields
-				$(".allow").editable("destroy");
-				this.edit_value_in_field();
+				//$(".allow").editable("destroy");
+				//this.edit_value_in_field();
 
 
 
@@ -221,11 +259,14 @@ define( function(require){
 
 
 						last_field = "";
-						for(var i = 0; i <  data.fields.length  ; i++){ 
+						//for(var i = 0; i <  data.fields.length  ; i++){ 
+						_.each( data.fields , function( new_tr ){
 							
-							last_fields += "<td class='last_allow' data-id="+data.fields[i].id+"></td>";
-					       
-						}
+							last_fields += "<td contenteditable='true' class='last_allow no-event-attach' data-id='"+new_tr.id+"'></td>"
+
+
+						//}
+						});
 
 						last_fields += _td_in_add_section;
 						last_fields += "</tr>";
@@ -234,6 +275,7 @@ define( function(require){
 
 
 
+						self.force_trigger_change_on_td_with_contenteditable()
 
 
 					}, dataType : "json",
@@ -352,51 +394,44 @@ define( function(require){
 		},
 
 		 // iniciamos que puedan editar los campos al dar click
-		  edit_value_in_field : function(){
+		  edit_value_in_field : function(current_el){
+
+			console.log( current_el)
+
+			var $el = $(current_el.currentTarget);
+			var _content = $el.html();
+
 
 			var self = this;
 
+			if( _content.length >= 0 ) {
+
+				var new_data = { data : _content };
+
+				var _current_id = $el.attr("data-id") 
+
+					$.ajax({
+
+						url : "/api/v1/field/"+_current_id+"/",
+						type : "PUT",
+						data : JSON.stringify( new_data ),
+						success : function(_data){
 
 
-			var td_ = $(".allow");
-				 td_.editable({
-					      touch : true, // Whether or not to support touch (default true)
-					      lineBreaks : true, // Whether or not to convert \n to <br /> (default true)
-					      closeOnEnter : true, // Whether or not pressing the enter key should close the editor (default false)
-					      event : 'click',
-
-						callback : function( data ) {
-							// Callback that will be called once the editor is blurred
-							if( data.content.length >= 0 ) {
-
-								var new_data = { data : data.content };
-
-								var _current_id = data.$el.attr("data-id") 
-
-								$.ajax({
-
-									url : "/api/v1/field/"+_current_id+"/",
-									type : "PUT",
-									data : JSON.stringify( new_data ),
-									success : function(_data){
+							// al dar enter se va a al campo de abajo
+							//self.from_current_td_select_next_down_td(data.$el)
 
 
-										// al dar enter se va a al campo de abajo
-										//self.from_current_td_select_next_down_td(data.$el)
+						},
+
+						dataType : "json",
+						contentType: "application/json",
+
+					});
 
 
-									},
+			}
 
-									dataType : "json",
-									contentType: "application/json",
-
-								});
-
-
-								}
-							}
-
-						});
 
 		  },
 		  add_section : function(){
@@ -429,12 +464,12 @@ define( function(require){
 						       var _current_section_name = data.section_name_ 
 
 						       //se ingresa la nueva columna antes del boton +
-						        $last_th = $( "<th class='edit_section'  data-id='"+data.id_section+"'> <span class='name'>"+_current_section_name+"</span></th>");
+						        $last_th = $( "<th class='edit_section no-event-attach' contenteditable='true'  data-id='"+data.id_section+"'> <span class='name'>"+_current_section_name+"</span></th>");
 							var last_th = $(".app thead tr th:last-child").before($last_th)
 
 							//reload edition name
-						 	$(".edit_section .name").editable("destroy");
-							self.edit_section_name();
+						 	//$(".edit_section .name").editable("destroy");
+							//self.edit_section_name();
 
 							//contenedor de los datos --> fields
 							$childs_node = $node_container_data.children()
@@ -442,16 +477,15 @@ define( function(require){
 							_.each ( data.fields , function(data, keys ){
 
 								//pone los td de la seccion creada antes del boton +
-								$(  $childs_node[ keys] ).children(":last-child").before("<td class='allow' data-id='"+data.id+"'></td>")
+								$(  $childs_node[ keys] ).children(":last-child").before("<td contenteditable='true' class='allow no-event-attach' data-id='"+data.id+"'></td>")
 
 							});
 
-							$($childs_node[ _node_max_field_length_container_data  ]).children(":last-child").before("<td class='last_allow'></td>")
+							$($childs_node[ _node_max_field_length_container_data  ]).children(":last-child").before("<td contenteditable='true' class='last_allow no-event-attach'></td>")
 
-							//reload edit fields
-						 	$(".allow").editable("destroy");
-							self.edit_value_in_field();
+							//self.edit_value_in_field();
 
+							self.force_trigger_change_on_td_with_contenteditable()
 
 
 						},
@@ -486,9 +520,11 @@ define( function(require){
 				     $(".section_[data-nav=app_desk]").show();
 				     $(".container_app").html(this.$el.html(template_field_and_sections_rendered));
 				     //activamos que pueda editar valores en los campos
-				     this.edit_value_in_field();
+				     //this.edit_value_in_field();
 				     //activamos que pueda editar cabecera
-				     this.edit_section_name();
+				     //this.edit_section_name();
+
+				     this.force_trigger_change_on_td_with_contenteditable();
 
 				     this.paginator(application_data);
 
@@ -542,13 +578,14 @@ define( function(require){
 											$(".last_allow").removeClass("last_allow").addClass("allow");
 
 											//reload edit fields
-											$(".allow").editable("destroy");
+											//$(".allow").editable("destroy");
 
 
 										        $(".container_data").append(template_field_fill);
 
 										     	//reload edit fields
-										     	self.edit_value_in_field();
+										     	//self.edit_value_in_field();
+											self.force_trigger_change_on_td_with_contenteditable()
 
 
 
