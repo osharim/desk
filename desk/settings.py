@@ -2,11 +2,7 @@
 import os,sys
 import dj_database_url
 
-
-
-dev = True 
 dev = False 
-
 
 APP_VERSION = '0.0.1'
 
