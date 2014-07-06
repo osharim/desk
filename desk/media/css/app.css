@@ -1,7 +1,10 @@
 .app thead th:last-child {
-	    color: #1abc9c;
-	        font-size: 24px;
-	}
+	    color: #16A085;
+	        
+	    font-size: 23px;
+	
+	    border: 1px solid #eee;
+}
 
 .config_section {
 	    color: #aaa;
@@ -11,21 +14,28 @@
 	cursor:pointer;
 }
 .app tr:nth-child(2n) {
-	    background: none repeat scroll 0 0 #f1f2f3;
+	    background: none repeat scroll 0 0 #f5fafd;
     }
 
 .app tbody td {
-	   color: #333;
-	    border: 1px solid #ddd;
-	       font-size: 12px;
-	           padding: 14px 0;
-	    }
+	   color: #4b5467;
+	    
+	   border: 1px solid #eee;
+	       
+	   font-size: 14px;
+	           
+	   padding: 8px 0;
+	    
+	   font-family: sans-serif;
+}
 
 
 .app tbody td:first-child {
-	background: none repeat scroll 0 0 white;
-	    border-bottom: 1px solid white;
-	        border-left: 1px solid white;
+	/* background: none repeat scroll 0 0 white; */
+	    
+	/* border-bottom: 1px solid white; */
+	        
+	/* border-left: 1px solid white; */
 		    color: #bbb;
 }
 
@@ -39,12 +49,16 @@ table.app {
 	          width: 100%;
     }
    .app thead th {
-	      border: 1px solid #ccc;
-	       background: none repeat scroll 0 0 #fafbfc;
-		       font-size: 12px;
-		          padding: 8px 0;
+	      border: 1px solid #eee;
+	       
+	      background: white;
+		       
+	      font-size: 12px;
+		          
+	      padding: 6px 0;
 			       text-align: center;
-			           text-transform: capitalize;
+			           
+	      color: #5da5dd;
 }
 
 .app-str .name {
@@ -114,7 +128,7 @@ textarea{
 
 .app tbody td:first-child:hover { 
 	    border-left:1px solid white;
-	    border-bottom:1px solid white;
+	    /* border-bottom:1px solid white; */
 	    border-right:1px solid #ddd;
 	        box-shadow: 0 0;
 		    color: #999;
@@ -188,9 +202,12 @@ textarea{
 
 .app thead th:first-child {
 	  background: none repeat scroll 0 0 white;
-	      border-bottom: 1px solid white;
-	          border-left: 1px solid white;
-		      border-top: 1px solid white;
+	      
+	  /* border-bottom: 1px solid white; */
+	          
+	  /* border-left: 1px solid white; */
+		      
+	  /* border-top: 1px solid white; */
 		          color: #bbb;
     }
 
@@ -199,3 +216,46 @@ textarea{
 	    margin-top: 8px;
 	        text-align: center;
 	}
+
+
+.add_column{
+    /* background: #16A085 !important; */
+	
+	
+    /* color: white !important; */
+    /* opacity: .7; */
+}
+
+.app_desk .edit_btn{
+	
+	font-size:12px;
+	color: #777;
+}
+
+
+textarea:focus, input:focus{
+	    outline: 0;
+    }
+
+.sexy_search_data input.search-str.search-ui.search {
+	border: 0;
+	padding: 16px;
+	font-size: 17px;
+	width: 600px;
+	float: left;
+}
+
+div.sexy_search_data {
+	border-bottom: 1px solid #ccc;
+	height: 48px;
+	box-shadow: 1px 0 1px rgba(255, 255, 255, 0.6);
+	background: white;
+}
+
+
+.sexy_search_data i.glyphicon.glyphicon-search {
+	float: left;
+	padding: 15px;
+	font-size: 12px;
+	padding-right: 0px;
+}

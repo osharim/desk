@@ -33,7 +33,7 @@ html,body,#main_container{
 	      display: none;
 	          float: left;
 		      height: 100%;
-		          left: 191px;
+		          left: 225px;
 			      overflow-y: auto;
 			          position: absolute;
 				      right: 0;
@@ -330,6 +330,7 @@ html,body,#main_container{
 		 background: none repeat scroll 0 0 white;
 		 border: 1px solid rgba(0, 0, 0, 0.1);
 		 border-radius: 0 0 5px 5px;
+		 display:none;
 		 color: black;
 		 font-size: 12px;
 		 left: 50%;

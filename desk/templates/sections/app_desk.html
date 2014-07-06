@@ -1,9 +1,21 @@
-<div class="section_" data-nav="app_desk">
+<div class="section_ app_desk" data-nav="app_desk">
+
+			{% include "search_header.html" %}
 	<div class="header">
 		<ul>
 
-			<li class="path"> <strong><span class="current_app"> Aplicacion </strong> </span> </li>
-			<li class="path fl rg"> {% include "login/login_user.html" %} </li>
+			<li class="path"> <strong>
+				
+				
+				<span class="current_app create_name_app_" contenteditable="true"> Cargando Aplicacion...
+		
+				
+			 </span>  
+			<span class="edit_btn"> <i class="glyphicon glyphicon-pencil"></i> editar</span>  
+				</strong>
+			
+
+			</li>
 
 		</ul>
 	</div>
@@ -22,13 +34,13 @@
 
 					<div class="conf_section">
 
-						<div class="search create_name_app_" data-type="create_app">
-							<i class="glyphicon glyphicon-th"></i>
-							<input type="text" placeholder="Nombre de la aplicacion" />
-
-
-							
+						<div class="search " data-type="create_app">
+							<i class="glyphicon glyphicon-search"></i>
+							<input type="text" placeholder="Buscar" />
 						</div>
+
+
+
 							<span class="full_screen fl rg" data-path=""> 
 
 								<div><i class='glyphicon glyphicon-fullscreen'></i> Maximizar</div>

@@ -26,13 +26,13 @@ return (function(){
 			
 			slideRightMainWindow : function(){
 
-				$(".section_").animate({left : 365 });
+				$(".section_").animate({left : 405 });
 				 $(".appbox").show();
 				 //$(".menu .appbox").show();
 			},
 			slideLeftMainWindow : function(){
 
-				 $(".section_").animate({left : 190  });
+				 $(".section_").animate({left : 225 });
 			},
 
 			showLoader : function(){
@@ -76,6 +76,7 @@ return (function(){
 
 
 
+					     /*
 					     $( document ).ajaxComplete(function() {
 						      
 						        window.App.Sections.hideLoader();  
@@ -87,6 +88,7 @@ return (function(){
 						          window.App.Sections.showLoader();  
 							    
 					     });
+					     */
 
 
 				//init workspaces

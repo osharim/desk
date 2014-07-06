@@ -42,6 +42,7 @@ define( function(require){
 					           window.App.Sections.slideRightMainWindow();
 						   //eliminamos todos los menus que fueron seleccionado anteriornente 
 						    $(".wbox").find(".active").removeClass("active")
+						    $(".menu").find(".active").removeClass("active")
 						    //activamos el estilo para el workspace que se le dio click
 						    $( e.currentTarget ).find("li").addClass("active")
 

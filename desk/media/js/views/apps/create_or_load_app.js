@@ -46,16 +46,23 @@ define( function(require){
 
 			 events : {
 
-			    'keyup input' : 'update_name'        
+			    'keyup' : 'update_name'        
 
 			},
 		       update_name: function(e){
-
-				 var current_application_name = $(e.currentTarget).val();
-		 		 var id_to_update =  App.Instance.aplicacion.id;
+				   
+				   if(e.keyCode == 13 || e.whitch == 13){
+					   
+					   return false;
+					   
+				   }
+					console.log("enter");
+				var current_app_data = $(e.currentTarget);
+				 var current_application_name = current_app_data.html().replace(/\v+/g, '');
+		 		 var id_to_update =  current_app_data.attr("data-id");
 
 		                 //clase en la que se inyectara el nombre de la aplicacion
-			 	 $('.current_app').html( current_application_name  )
+			 	$('.current_app').html( current_application_name  )
 				$(".app-str li[data-id="+id_to_update+"] .name").html(current_application_name);
 
 				var current_name_app = { name : current_application_name } ; 
@@ -166,11 +173,13 @@ define( function(require){
 					 	self.edit_value_in_field(e);
 					 }
 
-					}).keypress(function(e) {
+					}).keydown(function(e) {
+					 	console.log("keudown")
 
 					 	self.check_key_pressed(e);
 
 				});
+
 
 				 all_td_in_application_that_allow_edit_field.removeClass("no-event-attach");
 
@@ -293,7 +302,11 @@ define( function(require){
 		},
 		check_key_pressed : function(event){
 
-			var current_el = $(event.currentTarget).parent()
+			var current_el = $(event.currentTarget)
+
+				console.log( event)
+				console.log( event.currentTarget)
+				console.log( event.keyCode)
 
 
 
@@ -302,7 +315,7 @@ define( function(require){
 			case 9: //for tab key
 				
 
-				    this.from_current_td_select_next_right_td( current_el);
+				    //this.from_current_td_select_next_right_td( current_el);
 				    return false; // <== here
 
 
@@ -347,7 +360,7 @@ define( function(require){
 					var $el = $(el);
 					next_td  = $el.prev()[0]
 
-					$(next_td).click().addClass("focused")
+					$(next_td).focus().addClass("focused")
 
 				    return false; // <== here
 
@@ -360,7 +373,7 @@ define( function(require){
 					var $el = $(el);
 					next_td  = $el.next()[0]
 
-					$(next_td).click().addClass("focused")
+					$(next_td).focus().addClass("focused")
 
 				    return false; // <== here
 
@@ -374,7 +387,7 @@ define( function(require){
 			var current_index = $el.index();
 			next_td  = $el.parent().prev().children("td:eq("+current_index+")")[0]; 
 
-			$(next_td).click().addClass("focused")
+			$(next_td).focus().addClass("focused")
 
 		},
 
@@ -389,7 +402,7 @@ define( function(require){
 			var current_index = $el.index();
 			next_td  = $el.parent().next().children("td:eq("+current_index+")")[0]; 
 
-			$(next_td).click().addClass("focused")
+			$(next_td).focus().addClass("focused")
 
 		},
 
@@ -505,8 +518,7 @@ define( function(require){
 
 
 				     var application_data = this.options.application_data;
-			 	    //nombre de la aplicacion actual
-				     $(".current_app").html(application_data.meta.app.name);
+			 	   
 
 				     var start_id_counter = 1;
 				     //rendereamos los datos de la app just fields
@@ -517,12 +529,16 @@ define( function(require){
 				     var template_field_and_sections_rendered  = _.template(this.template_field_section , { data  : application_data , data_tr_template : template_field_fill  } );    
 
 				     $(".section_").hide();
+					 
+					 var app_data = this.options.application_data.meta.app;
+					  //nombre de la aplicacion actual
+				     $(".current_app").attr({ "data-id" : app_data.id })
+					 .html(app_data.app);
+				     
 				     $(".section_[data-nav=app_desk]").show();
 				     $(".container_app").html(this.$el.html(template_field_and_sections_rendered));
-				     //activamos que pueda editar valores en los campos
-				     //this.edit_value_in_field();
-				     //activamos que pueda editar cabecera
-				     //this.edit_section_name();
+
+				     console.log("here")
 
 				     this.force_trigger_change_on_td_with_contenteditable();
 
@@ -680,7 +696,7 @@ define( function(require){
 									       var _current_el = $(this);
 									          _current_el.html(maximize);
 
-										   $(".section_[data-nav=app_desk]").animate({ left : 365 } ,
+										   $(".section_[data-nav=app_desk]").animate({ left : 405 } ,
 											function(){
 												mutex_fullscreen = false;
 										});
