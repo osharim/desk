@@ -1,0 +1,15 @@
+
+		<% _.each( application_to_share , function(section_data){  %>
+
+		<tr data-id="<%= section_data.id %>">
+
+				<td><input class="allow_share" type="checkbox" name="share_" value="section_share" checked> </td>
+				<td > <%= section_data.name %> </td>  
+				<td><input class="allow_edit" type="checkbox" name="share_" value="edit_allow" checked> </td>
+				<td><input class="allow_view" type="checkbox" name="share_" value="view_allow" checked> </td>
+			</tr>
+
+		<% }); %>
+
+
+

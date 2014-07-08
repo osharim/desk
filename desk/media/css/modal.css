@@ -3,7 +3,7 @@
 
 
 .block{
- background: none repeat scroll 0 0 rgba(60, 109, 142, 0.97);
+ background: rgba(0, 0, 0, 0.7);
      bottom: 0;
          display: none;
 	     height: 100%;
@@ -26,19 +26,28 @@
 	       position: fixed;
 	           top: 10%;
 		       width: 560px;
-		           z-index: 1050;
+		           
+   border-radius: 5px;
+   z-index: 1050;
+   background: #fafbfc;
+   border: 1px solid #ccc;
+   overflow: hidden;
 }
 /* titulo de la ventana */
 
 
 .modal .title{
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-        box-shadow: 0 1px rgba(255, 255, 255, 0.2);
-	    color: #FFFFFF;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        
+    box-shadow: 0 1px rgba(255, 255, 255, 0.2);
+	    
 	        font-family: "gl";
-		    font-size: 22px;
-		        padding-bottom: 21px;
-			    text-align: center;
+		    
+    background: #fafbfc;
+    padding: 23px 14px;
+    font-size: 22px;
+		        
+			    
 	     }
 
 /* body de la ventana */
@@ -47,7 +56,9 @@
          color: #FFFFFF;
 	     font-family: "gl";
 	         font-size: 20px;
-		     padding: 28px 15px;
+		     
+         background: #fefefe;
+         padding: 28px 15px;
 }
 
 
@@ -57,7 +68,9 @@
    margin-bottom: 0;
        padding: 14px 15px 15px;
            text-align: right;
-				 }
+				 
+   border-top: 1px solid #eee;
+}
 
 /* botton cerrar "x" */
 

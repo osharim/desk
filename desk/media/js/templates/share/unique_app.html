@@ -1,0 +1,25 @@
+
+
+<td>  <i class="glyphicon glyphicon-th "></i> <%= app.name %> </td>
+<td>  <%= from_user.username %> </td>
+<td> 
+
+	
+	<%  _.each( users_shared , function( user ){ %>
+
+	<span class="tag">
+		<%= user.email %>
+	</span>
+
+	<% }); %>
+
+</td>  
+
+
+<td> Hace 2 horas </td>
+<td>  <div class=""> Editar </div> </td>
+
+
+
+
+

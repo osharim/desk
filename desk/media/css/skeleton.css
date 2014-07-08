@@ -121,36 +121,29 @@ html,body,#main_container{
 
 
 .input_ {
-	          background: none repeat scroll 0 0 rgba(0, 0, 0, 0.2);
-		      border: 1px solid rgba(0, 0, 0, 0.4);
-		          box-shadow: 1px 1px rgba(255, 255, 255, 0.3);
-			      color: #FFFFFF;
-			          font-family: "gb";
-				      font-size: 14px;
-				          margin: 14px 0;
-					      padding: 12px 0 12px 4%;
-					          width: 96%;
+	background: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	box-shadow: 1px 1px rgba(255, 255, 255, 0.3);
+	font-family: "gb";
+	font-size: 14px;
+	margin: 14px 0;
+	padding: 12px 0 12px 4%;
+	border-radius: 4px;
+	width: 96%;
 }
 
 .input_ input {
 	       background: none repeat scroll 0 0 rgba(0, 0, 0, 0);
 	           border: medium none rgba(0, 0, 0, 0);
-		       color: rgba(255, 255, 255, 0.4);
 		           font-size: 14px;
 			       padding-left: 11px;
 			           width: 90%;
 }
 
 .input_ .glyphicon {
-	    color: rgba(255, 255, 255, 0.8);
-	        font-size: 11px;
+	color: rgba(100, 100, 100, 0.8);
+	font-size: 11px;
 }
-
-.input_ input:focus{
-	color:white;
-
-}
-
 
 
     .btn-group, .btn-group-vertical {
@@ -301,10 +294,12 @@ html,body,#main_container{
 
  .current_section {
 	 color: rgba(255, 255, 255, 0.8);
-	     float: left;
-	         font-size: 12px;
-		     padding: 11px;
-		         width: 87%;
+	 float: left;
+	 font-size: 12px;
+	 padding: 23px 0;
+	 width: 87%;
+	 text-transform: uppercase;
+	 padding-left: 11px;
 	     }
 
 	     .btn_add_workspace {

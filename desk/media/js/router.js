@@ -11,6 +11,7 @@ return (function(){
        	     handler     = require('handlers'),
        	     modal 	 = require('modal'),
        	     bootstrap = require('bootstrap'),
+	   create_or_load_app = require('create_or_load_app'),
        	     timeago     = require('timeago');
 
 
@@ -49,6 +50,8 @@ return (function(){
 
 		},
 		Instances : {
+			CurrentApp : {},
+			Router : {},
 
 			Contact : false,
 			Workspace : {
@@ -72,39 +75,13 @@ return (function(){
 
 			initialize : function(){
 
-
-
-
-
-					     /*
-					     $( document ).ajaxComplete(function() {
-						      
-						        window.App.Sections.hideLoader();  
-							  
-					     });
-
-
-					     $( document ).ajaxStart(function() {
-						          window.App.Sections.showLoader();  
-							    
-					     });
-					     */
-
-
 				//init workspaces
 
 				   require(["workspace"], function (workspace) {
 
-					   //if( window.App.Instances.Workspace.By_id){
-
 						 !new workspace();
 
-					   //}
-
 				   });
-
-
-
 
 		},
 		routes : {
@@ -112,7 +89,9 @@ return (function(){
 			"" : "dashboard",
 			"!/dashboard/" : "dashboard",
 			"!/aplicaciones/favoritas/" : "apps_favorites",
+			"!/aplicacion/compartida/" : "shared_application",
 			"!/workspace/:workspace/:id/" : "workspace",
+			"!/app/:id/" : "load_application",
 			//"!/contactos/" : "contact",
 			"!/ajustes/" : "setting",
 
@@ -150,6 +129,34 @@ return (function(){
 					    new Apps();
 					    window.App.Sections.slideLeftMainWindow();
 			},
+			shared_application : function(){
+
+					var  SharedApplication = Backbone.View.extend({
+
+						 defaults : {  
+							handler : "shared-application" ,   
+						},
+						initialize : function(){ 
+
+								   handler.tabs.active({ tab : this.defaults.handler , container : this.defaults.handler  }); 
+
+
+								//init shared_application 
+
+								   require(["share_application"], function (share) {
+
+										 !new share();
+
+								   });
+
+
+
+						}
+
+					});
+					!new SharedApplication()
+			},
+
 
 			contact : function(){
 				if(config.user.rol == 1){
@@ -206,6 +213,14 @@ return (function(){
 			},
 
 
+			load_application : function(id){
+
+			        var current_app_id = parseInt(id);
+				//window.App.Instances.Workspace.By_id  = id ;
+				var load_app = new create_or_load_app({ create : false , id_to_load_application : current_app_id , application_name : "" });
+
+			},
+
 	});
 
 	if( config.user.rol ==1){
@@ -216,7 +231,7 @@ return (function(){
 
 
 	/* Enabling backbone history so that backbone start monitoring hash changes in url. */ 
-	new App.Router();
+	App.Instances.Router = new App.Router();
 	Backbone.history.start(); 
 
 	};// initialize App

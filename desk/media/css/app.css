@@ -18,7 +18,7 @@
     }
 
 .app tbody td {
-	   color: #4b5467;
+	   color: #8A8C91;
 	    
 	   border: 1px solid #eee;
 	       
@@ -53,12 +53,14 @@ table.app {
 	       
 	      background: white;
 		       
-	      font-size: 12px;
+	      font-size: 11px;
 		          
 	      padding: 6px 0;
 			       text-align: center;
 			           
-	      color: #5da5dd;
+	      font-family: sans-serif;
+	      color: #050505;
+	      text-transform: uppercase;
 }
 
 .app-str .name {
@@ -258,4 +260,84 @@ div.sexy_search_data {
 	padding: 15px;
 	font-size: 12px;
 	padding-right: 0px;
+}
+
+
+.modal label {
+	color: #999;
+	font-size: 12px;
+	font-family: sans-serif;
+}
+
+
+
+table.app.settings_share_app th {
+	color: #D17684;
+	font-size: 12px;
+}
+
+table.app.settings_share_app {
+	margin-top: 20px;
+	font-size: 12px !important;
+}
+
+
+
+table.app.settings_share_app  tbody td:hover,table.app.settings_share_app  tbody td:focus{
+	border: 1px solid #ddd;
+	box-shadow: 0 0 0;
+	color: #999;
+
+}
+
+
+
+.share_application .glyphicon-send {
+	padding-right: 10px;
+	color: rgba(255,255,255,.8);
+}
+
+
+.shared_grid td {
+	border: 0 !important;
+	padding: 21px 0 !important;
+}
+
+
+.shared_grid tr {
+	border-bottom: 1px solid #eee!important;
+}
+
+
+.tag,li.content_users_s_a > span {
+	color: white;
+	background: #718897;
+	font-size: 11px;
+	font-family: sans-serif,arial;
+	padding: 5px 18px;
+	margin: 3px 5px;
+	float: left;
+	border-radius: 5px;
+}
+
+li.content_users_s_a {
+	float: left;
+	width: 100%;
+	padding: 10px 0;
+}
+
+.max_row{
+	width : 500px;
+}
+
+.settings_share_app tr:hover{
+
+	background:#eaeaea;	
+	
+}
+
+.settings_share_app tr:active{
+
+	background:inherit;	
+	
 }

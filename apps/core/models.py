@@ -84,4 +84,47 @@ class AppHasSection(models.Model):
 	class Meta:
 		db_table = u'app_has_section'
 
+#*******************************************************************
+#********************* SHARE **************************************
+#*******************************************************************
+
+#configuracion de las secciones dentro de una aplicacion, puede ver, puede editar
+class SettingsSharedAplication(models.Model):
+
+    	section = models.ForeignKey(Section,  db_column = "section_id")
+    	can_edit  = models.IntegerField( default = 1)
+    	can_view  = models.IntegerField( default  = 1)
+
+	class Meta:
+		db_table = u'settings_shared_application'
+
+#el usuario comparte una aplicacion con un usuario : N:M
+class ShareApplication(models.Model):
+
+    	from_user = models.ForeignKey(User , related_name ="from_user_id")
+    	app = models.ForeignKey(Apps,  db_column = "app_id")
+
+	class Meta:
+		db_table = u'share_application'
+
+
+#Puede compartir con muchios usuarios esta aplicacion
+class ShareApplicationManyUsers(models.Model):
+
+    	to_user  = models.ForeignKey(User , related_name ="to_user_id")
+    	share_application  = models.ForeignKey(ShareApplication)
+
+	class Meta:
+		db_table = u'share_application_many_users'
+
+
+#una palicacion tiene muchas configuraciones
+class SharedApplicationHasSettings(models.Model):
+
+    	settings = models.ForeignKey(SettingsSharedAplication)
+    	share = models.ForeignKey(ShareApplication)
+
+	class Meta:
+		db_table = u'shared_aplication_has_settings'
+
 

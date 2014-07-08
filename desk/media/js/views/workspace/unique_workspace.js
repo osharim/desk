@@ -6,8 +6,8 @@ define( function(require){
 
 	 var $           = require('jquery'),  
 	  _           = require('underscore'), 
-	  appbox      = require('appbox'), 
-	  Backbone    = require('backbone');
+	  Backbone    = require('backbone'),
+	  appbox      = require('appbox');
 
 	return (function(){ 
 

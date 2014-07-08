@@ -16,40 +16,7 @@ from tastypie.paginator import Paginator
 
 class PageNumberPaginator(object):
 
-    """
-        Limits result sets down to sane amounts for passing to the client.
-        
-        This is used in place of Django's ``Paginator`` due to the way pagination
-        works. ``limit`` & ``offset`` (tastypie) are used in place of ``page``
-        (Django) so none of the page-related calculations are necessary.
-        
-        This implementation also provides additional details like the
-        ``total_count`` of resources seen and convenience links to the
-        ``previous``/``next`` pages of data as available.
-        """
     def __init__(self, request_data, objects, resource_uri=None, limit=None, offset=0, max_limit=1000, collection_name='objects'):
-        """
-            Instantiates the ``Paginator`` and allows for some configuration.
-            
-            The ``request_data`` argument ought to be a dictionary-like object.
-            May provide ``limit`` and/or ``offset`` to override the defaults.
-            Commonly provided ``request.GET``. Required.
-            
-            The ``objects`` should be a list-like object of ``Resources``.
-            This is typically a ``QuerySet`` but can be anything that
-            implements slicing. Required.
-            
-            Optionally accepts a ``limit`` argument, which specifies how many
-            items to show at a time. Defaults to ``None``, which is no limit.
-            
-            Optionally accepts an ``offset`` argument, which specifies where in
-            the ``objects`` to start displaying results from. Defaults to 0.
-            
-            Optionally accepts a ``max_limit`` argument, which the upper bound
-            limit. Defaults to ``1000``. If you set it to 0 or ``None``, no upper
-            bound will be enforced.
-            """
-
 	id_application = int(request_data.get("application"))
 	application  = Apps.objects.filter( id = id_application )[0]
 
@@ -426,6 +393,8 @@ class AppsResource(ModelResource):
 
 
 
+
+
 #Todas las apps que un workspace tiene
 class WorkSpaceAppsResource(ModelResource): 
 
@@ -697,7 +666,44 @@ class AppHasSectionResource(ModelResource):
 	def get_object_list(self, request):
 
 		id_app  =  int(request.GET.get("app"))
-		sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app ).order_by("id")
+
+		#usuario actual que quiere ver la app, checamos si tiene permisos y si tiene que secciones puede ver 
+
+		current_user = request.user
+		this_application_is_shared = False
+
+		this_application_is_shared_with_current_user = ShareApplicationManyUsers.objects.filter( share_application__app__id  = id_app , to_user = current_user )
+
+		#la aplicacion que quiere ver el usuario se le fue compartida
+		if len(this_application_is_shared_with_current_user) > 0:
+			print this_application_is_shared_with_current_user
+			this_application_is_shared_with_current_user = this_application_is_shared_with_current_user[0]
+			print "aplicacion compartida" 
+			this_application_is_shared = True
+
+			print this_application_is_shared_with_current_user 
+			current_share_instance = this_application_is_shared_with_current_user.share_application
+
+			sections_shared_in_application = SharedApplicationHasSettings.objects.filter( share = current_share_instance ).order_by("id")
+
+			sections_str = []
+
+			for shared_settings in sections_shared_in_application:
+
+				shared_setting = shared_settings.settings
+				print shared_setting.section.id
+
+				sections_str.append(shared_setting.section.id)
+
+
+		print "ahh"
+		if this_application_is_shared:
+
+			sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app , section__in = sections_str  ).order_by("id")
+
+		else:
+
+			sections = super(AppHasSectionResource , self).get_object_list(request).filter(  app__id = id_app  ).order_by("id")
 
 
 		return sections
@@ -783,5 +789,135 @@ class AddSectionToApplicationResource(ModelResource):
 				SectionHasField.objects.create ( field = _current_field  , section =  _current_section )
 
 		return bundle
+
+
+
+#
+#********************* SHARE **************************************
+#********************* SHARE **************************************
+class ShareApplicationResource(ModelResource):
+
+	from_user = fields.ForeignKey("apps.api.resource.UsuarioResource",  full = True , attribute = 'from_user') 
+	#to_user = fields.ForeignKey("apps.api.resource.UsuarioResource",  full = True , attribute = 'to_user') 
+	app  = fields.ForeignKey("apps.api.resource.AppsResource",  full = True , attribute = 'app') 
+
+  	class Meta:
+
+	    queryset = ShareApplication.objects.all()
+	    allowed_methods = ['get','put','post']
+	    resource_name = 'share'
+	    always_return_data = False 
+	    authorization= Authorization()
+	    filtering = {
+			    "app"  : ["exact"],
+			    "to_user"  : ["exact"],
+			    "from_user"  : ["exact"],
+			}
+
+
+	def dehydrate(self , bundle):
+
+		#cuantos usuarios tiene la aplicacion compartida 
+		users_shared_in_application = ShareApplicationManyUsers.objects.filter( share_application = bundle.obj ).order_by("id")
+		users_shared_str = []
+
+		for shared_settings in users_shared_in_application:
+
+			#shared_setting = shared_settings.settings
+
+			users_shared_str.append({
+
+				"id" : shared_settings.to_user.id,
+				"email" : shared_settings.to_user.email,
+				#"c_v" : shared_setting.can_view,
+			})
+		bundle.data["users_shared"]   = users_shared_str
+
+		#secciones compartidas
+
+		sections_shared_in_application = SharedApplicationHasSettings.objects.filter( share = bundle.obj ).order_by("id")
+		sections_str = []
+		for shared_settings in sections_shared_in_application:
+
+			shared_setting = shared_settings.settings
+
+			sections_str.append({
+
+				"section" : shared_setting.section.name,
+				"id" : shared_setting.section.id,
+				"c_r" : shared_setting.can_edit,
+				"c_v" : shared_setting.can_view,
+			})
+		bundle.data["shared_sections"]   = sections_str
+		return bundle
+
+	def obj_create(self, bundle , request = None, ):
+
+		bundle = self.full_hydrate(bundle)
+		bundle.obj.save()
+
+		#instancia de shared application
+		share_instance = bundle.obj
+
+		users_to_share_application = bundle.data.get("to_user")
+
+
+		#guardamos la aplicacion compartida a los demas usuarios M2M
+		for user_email in users_to_share_application:
+
+			try:
+				_current_user_email = User.objects.get( email = user_email )
+				if _current_user_email is not None :
+					print _current_user_email
+					ShareApplicationManyUsers.objects.create( to_user = _current_user_email, share_application = share_instance )
+			except:
+				pass
+
+
+		setting_in_application_shared = bundle.data.get("shared_sections")
+		#save settings that allow users certains constrains
+		for setting_in_application  in setting_in_application_shared:
+
+			can_edit = setting_in_application.get("c_e")
+			can_view = setting_in_application.get("c_v")
+			section = setting_in_application.get("s_")
+
+			section_instance = Section.objects.get( pk = section)
+			setting_instance = SettingsSharedAplication.objects.create( section = section_instance , can_edit = can_edit , can_view = can_view )
+
+			#save m2m config and instances in shared application
+			SharedApplicationHasSettings.objects.create( settings = setting_instance , share = share_instance)
+
+		return bundle
+
+
+	def get_object_list(self, request):
+
+
+		#obtiene todos las aplicaciones que se le han compartido al usuario
+		 if request.META.get("REQUEST_METHOD") == "GET":
+
+			 current_user_logged = request.user
+
+			 #obtenemos las aplicaciones que alguien le compartio al usuario
+			 shared_with_current_user =  ShareApplicationManyUsers.objects.filter( to_user = current_user_logged ).values("share_application")
+
+			 id_shared_applications = []
+			 for shared_application in shared_with_current_user:
+				 id_shared_applications.append( shared_application["share_application"])
+
+			 instances_application_shared_with_current_user = ShareApplication.objects.filter( id__in = id_shared_applications )
+
+			 all_applications_shared  = super(ShareApplicationResource , self).get_object_list(request).filter( from_user = current_user_logged )
+
+			 return  all_applications_shared  | instances_application_shared_with_current_user
+
+		 return super(ShareApplicationResource , self).get_object_list(request)
+
+
+
+
+
+
 
 
