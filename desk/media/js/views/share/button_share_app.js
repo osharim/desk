@@ -56,8 +56,13 @@ define( function(require){
 				    },
 
 		      	   initialize : function(){
+				   	
+					if( !window.App.Instances.Share.events ){
 
+						//window.App.Instances.Share.events = true;
 						this.attach_event_on_checkbox();
+
+					}
 
 			},
 		      	   attach_event_on_checkbox : function(){
@@ -210,8 +215,8 @@ define( function(require){
 		           open_share : function(e){
 						
 						var current_app = window.App.Instances.CurrentApp;
-						var current_app_name = current_app.get("name");
-						var current_app_id = current_app.get("id");
+						var current_app_name = current_app.app;
+						var current_app_id = current_app.id;
 
 
 						// get all sections availble into application
@@ -242,8 +247,19 @@ define( function(require){
 						    	    footer : footer_in_application ,
 							    success : function(){
 
-						    		    !new button_share_on_modalbox();
-						    		    !new input_to_text_email_and_share();
+				
+								if( !window.App.Instances.Share.events ){
+
+										window.App.Instances.Share.events = true;
+
+										!new button_share_on_modalbox();
+										!new input_to_text_email_and_share();
+								}else{
+
+
+								}
+
+
 
 
 

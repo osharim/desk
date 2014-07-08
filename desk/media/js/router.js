@@ -51,6 +51,10 @@ return (function(){
 		},
 		Instances : {
 			CurrentApp : {},
+			Share : {
+				events : false, 
+				
+				},
 			Router : {},
 
 			Contact : false,
@@ -145,7 +149,8 @@ return (function(){
 
 								   require(["share_application"], function (share) {
 
-										 !new share();
+										 console.log(shared_section)
+										 var shared_section = new share();
 
 								   });
 
@@ -217,7 +222,9 @@ return (function(){
 
 			        var current_app_id = parseInt(id);
 				//window.App.Instances.Workspace.By_id  = id ;
+				console.log(load_app)
 				var load_app = new create_or_load_app({ create : false , id_to_load_application : current_app_id , application_name : "" });
+
 
 			},
 

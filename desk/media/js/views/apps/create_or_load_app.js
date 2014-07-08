@@ -14,6 +14,7 @@ define( function(require){
 	 var $           = require('jquery'),  
 	  _           = require('underscore'), 
 	  Backbone    = require('backbone'),
+	  button_share_app = require('button_share_app'),
 	  button_save_app = require('button_save_app');
 	  //require('editable');
 	  require('modal');
@@ -234,7 +235,7 @@ define( function(require){
 
 
 				var last_fields = "<tr>";
-				var $sections = $(".edit_section");
+				var $sections = $(".app_desk .edit_section");
 				var sections_length =  $sections.length
 
 				//ids de las secciones que se les agregara un campo extra
@@ -280,7 +281,7 @@ define( function(require){
 						last_fields += _td_in_add_section;
 						last_fields += "</tr>";
 
-						$(".container_data").append(last_fields);
+						$(".app_desk .container_data").append(last_fields);
 
 
 
@@ -548,10 +549,14 @@ define( function(require){
 
 				      var current_app_id = application_data.meta.app.id;
 				      $(".app-str li").removeClass("active");
+
 				      $(".app-str li[data-id="+current_app_id+"]").addClass("active")
 
+				      window.App.Instances.CurrentApp =  application_data.meta.app
 
-
+				    console.log( this )
+				    console.log("hoosooso")
+	  			    !new button_share_app();
 
 		 },
 		paginator : function(data){
